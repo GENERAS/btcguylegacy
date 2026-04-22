@@ -24,6 +24,7 @@ import MentorshipManager from '../components/admin/MentorshipManager'
 import ProjectInquiriesManager from '../components/admin/ProjectInquiriesManager'
 import TestimonialsManager from '../components/admin/TestimonialsManager'
 import NotificationCenter from '../components/admin/NotificationCenter'
+import SettingsManager from '../components/admin/SettingsManager'
 
 export default function AdminPage() {
   const { user, profile, isAdmin, loading } = useAuth()
@@ -105,7 +106,7 @@ export default function AdminPage() {
         {activeTab === 'supporters' && <SupporterManager />}
         {activeTab === 'followers' && <FollowerManager />}
         {activeTab === 'comments' && <CommentModerator />}
-        {activeTab === 'settings' && <div className="text-center py-12 text-gray-400">Settings coming soon</div>}
+        {activeTab === 'settings' && <SettingsManager />}
         {activeTab === 'certificates' && <CertificatesManager />}
         {activeTab === 'mentorship' && <MentorshipManager />}
         {activeTab === 'inquiries' && <ProjectInquiriesManager />}

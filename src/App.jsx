@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import { AuthProvider } from './context/AuthContext'
 import Layout from './components/common/Layout'
 import ProtectedRoute from './components/common/ProtectedRoute'
-import ScrollToTop from './components/common/ScrollToTop'
 
 // Lazy load all pages for code splitting - reduces initial bundle size
 const HomePage = lazy(() => import('./pages/HomePage'))
@@ -58,7 +57,6 @@ function App() {
 
   return (
     <BrowserRouter>
-      <ScrollToTop />
       <AuthProvider>
         <Routes>
           <Route path="*" element={<ScrollHandler />} />

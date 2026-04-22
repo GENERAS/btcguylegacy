@@ -1,6 +1,48 @@
 import { useState } from 'react';
-import { Send, User, Mail, Phone, MessageSquare, CheckCircle, Loader2 } from 'lucide-react';
 import { sendContactFormConfirmation, sendAdminContactNotification } from '../../utils/emailService';
+
+// Inline SVG icons - no external libraries
+const IconSend = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+  </svg>
+)
+
+const IconUser = () => (
+  <svg className="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+  </svg>
+)
+
+const IconMail = () => (
+  <svg className="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+  </svg>
+)
+
+const IconPhone = () => (
+  <svg className="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+  </svg>
+)
+
+const IconMessageSquare = () => (
+  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+  </svg>
+)
+
+const IconCheckCircle = () => (
+  <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+)
+
+const IconLoader = () => (
+  <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+  </svg>
+)
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -72,7 +114,7 @@ export default function ContactForm() {
     return (
       <div className="bg-gradient-to-br from-slate-800/50 to-slate-800/30 rounded-xl p-8 border border-slate-700 text-center">
         <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-          <CheckCircle className="w-8 h-8 text-green-500" />
+          <IconCheckCircle />
         </div>
         <h3 className="text-2xl font-bold mb-2">Help is on the Way!</h3>
         <p className="text-gray-400 mb-4">
@@ -95,7 +137,7 @@ export default function ContactForm() {
     <div className="bg-gradient-to-br from-slate-800/50 to-slate-800/30 rounded-xl p-6 md:p-8 border border-slate-700">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
-          <MessageSquare className="w-6 h-6" />
+          <IconMessageSquare />
         </div>
         <div>
           <h2 className="text-2xl font-bold">Need Help?</h2>
@@ -113,7 +155,7 @@ export default function ContactForm() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
-              <User className="w-4 h-4 inline mr-2" />
+              <IconUser />
               Name *
             </label>
             <input
@@ -128,7 +170,7 @@ export default function ContactForm() {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
-              <Mail className="w-4 h-4 inline mr-2" />
+              <IconMail />
               Email *
             </label>
             <input
@@ -145,7 +187,7 @@ export default function ContactForm() {
 
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
-            <Phone className="w-4 h-4 inline mr-2" />
+            <IconPhone />
             Phone (Optional)
           </label>
           <input
@@ -160,7 +202,9 @@ export default function ContactForm() {
 
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
-            <MessageSquare className="w-4 h-4 inline mr-2" />
+            <svg className="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+            </svg>
             Message *
           </label>
           <textarea
@@ -181,12 +225,12 @@ export default function ContactForm() {
         >
           {loading ? (
             <>
-              <Loader2 className="w-5 h-5 animate-spin" />
+              <IconLoader />
               Sending...
             </>
           ) : (
             <>
-              <Send className="w-5 h-5" />
+              <IconSend />
               Get Help Now
             </>
           )}
