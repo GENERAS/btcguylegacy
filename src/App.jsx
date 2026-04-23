@@ -229,20 +229,15 @@
 //           <Route path="*" element={<Navigate to="/" replace />} />
 
 //         </Routes>
-//       </AuthProvider>
-//     </BrowserRouter>
-//   )
-// }
-
 import { useEffect, lazy, Suspense } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import Layout from './components/common/Layout'
 import ProtectedRoute from './components/common/ProtectedRoute'
+import AdminLoginPage from './pages/AdminLoginPage'
 
 // Pages
 const HomePage = lazy(() => import('./pages/HomePage'))
-const AdminLoginPage = lazy(() => import('./pages/AdminLoginPage'))
 const AdminPage = lazy(() => import('./pages/AdminPage'))
 const AcademicPage = lazy(() => import('./pages/AcademicPage'))
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage'))
@@ -306,7 +301,7 @@ function App() {
         <Route path="/services" element={<Navigate to="/service" replace />} />
 
         {/* AUTH */}
-        <Route path="/admin-login" element={<Suspense fallback={<PageLoader />}><AdminLoginPage /></Suspense>} />
+        <Route path="/admin-login" element={<AdminLoginPage />} />
 
         <Route path="/admin" element={
           <ProtectedRoute>
