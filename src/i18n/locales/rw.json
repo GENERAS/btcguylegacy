@@ -1,0 +1,103 @@
+{
+  "nav": {
+    "home": "Ahabanza",
+    "academic": "Amashuri",
+    "projects": "Proje",
+    "trading": "Kucuruza",
+    "community": "Umuryango",
+    "testimonials": "Ibyemezo",
+    "mentorship": "Ubuyobozi",
+    "blog": "Blog",
+    "hireMe": "Nkorere",
+    "admin": "Panneau Admin",
+    "signOut": "Sohoka"
+  },
+  "common": {
+    "buyMeCoffee": "Ndinze",
+    "loading": "Tegereza",
+    "readMore": "Soma Byinshi",
+    "learnMore": "Menya Byinshi",
+    "getStarted": "Tangira",
+    "contact": "Twandikire",
+    "subscribe": "Iyandikishe",
+    "submit": "Ohereza",
+    "cancel": "Hagarika",
+    "save": "Bika",
+    "delete": "Siba",
+    "edit": "Hindura",
+    "create": "Kora",
+    "search": "Shaka",
+    "filter": "Sefatira",
+    "sort": "Byaranguwe",
+    "viewAll": "Reba Byose",
+    "seeMore": "Reba Byinshi",
+    "back": "Subira Inyuma",
+    "next": "Ikikurikira",
+    "previous": "Icyabanjirije",
+    "close": "Funga",
+    "view": "Reba",
+    "visit": "Sura"
+  },
+  "home": {
+    "heroTitle": "Igira Umwuga wa Imari y'Ejo",
+    "heroSubtitle": "Igana kucuruza crypto, kwubaka blockchain, n'ubuhanga bwa DeFi baturutse ku banyamwuga mu Rwanda no muri Afurika yose.",
+    "servicesTitle": "Ibiduha",
+    "servicesSubtitle": "Amashuri yuzuye n'ibikoresho by'urugendo rwawe rwa crypto",
+    "communityTitle": "Uzuza Umuryango Wacu",
+    "communitySubtitle": "Huza n'ibihumbi by'abigana n'abacuruzi muri Afurika yose"
+  },
+  "stats": {
+    "academic": "Amashuri",
+    "academicDesc": "Kuva ku Gasozi kugeza ku PhD",
+    "projects": "Proje Zakozwe",
+    "projectsDesc": "Web, Mobile, Blockchain",
+    "trades": "Amadirishya Yakozwe",
+    "tradesDesc": "Binance, MT4, MT5",
+    "supporters": "Abafasha",
+    "supportersDesc": "Abagura ikawa",
+    "followers": "Abakurikira",
+    "followersDesc": "Abiyandikishije",
+    "daysActive": "Iminsi",
+    "daysActiveDesc": "Yubakwa umurage"
+  },
+  "announcement": {
+    "new": "GISHA",
+    "message": "Amahugurwa mashya amaze gushyirwa. Reba nonaha!",
+    "submessage": "Intebe ni nke cyane muri iki gihe cy'ubuyobozi",
+    "getMentorship": "Fata Ubuyobozi",
+    "hireMe": "Nkorere",
+    "dismiss": "Funga"
+  },
+  "sections": {
+    "academic": {
+      "title": "Urugendo rwa Amashuri",
+      "description": "Kuva ku Gasozi kugeza ku PhD. Reba inyandiko z'amashuri yose, impamyabushobozi, amanota, n'ibyagezweho.",
+      "levels": "Imyanya"
+    },
+    "projects": {
+      "title": "Proje Zakozwe",
+      "description": "Reba akazi kanjye: Legacy Platform, Trading Journal, E-commerce System, nibindi. Imigaragarire isanzwe na GitHub.",
+      "projects": "Proje"
+    },
+    "trading": {
+      "title": "Dashibodi ya Trading",
+      "description": "Amateka ya trading y'ukuri, amashusho ya P&L, amanota, ingamba, n'ibyigisho byavuye muri amadirishya {{count}}.",
+      "trades": "Amadirishya"
+    },
+    "community": {
+      "title": "Umuryango",
+      "description": "Uzuza umuryango! Soma blogs, reba amavidewo, reba amafoto, ugire nawe umufasha.",
+      "supporters": "Abafasha"
+    }
+  },
+  "footer": {
+    "rights": "Uburenganzira bwose bwihariwe",
+    "madeWith": "Yakozwe na",
+    "inRwanda": "mu Rwanda"
+  },
+  "language": {
+    "english": "Icyongereza",
+    "kinyarwanda": "Ikinyarwanda",
+    "switchTo": "Hindura"
+  }
+}

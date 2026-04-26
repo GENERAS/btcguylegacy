@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
+import './i18n' // Initialize i18n (English default - no change for existing users)
 import './index.css'
 import App from './App.jsx'
 

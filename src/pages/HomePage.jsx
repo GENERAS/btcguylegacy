@@ -1,4 +1,5 @@
 import { useEffect, useState, lazy, Suspense } from 'react'
+import { useTranslation } from 'react-i18next'
 import { supabase } from '../lib/supabase'
 import { Link } from 'react-router-dom'
 import LivingHero from '../components/hero/LivingHero'
@@ -84,6 +85,7 @@ const iconComponents = {
 }
 
 export default function HomePage() {
+  const { t } = useTranslation()
   const [stats, setStats] = useState({
     academic_levels: 0,
     projects: 0,
@@ -138,12 +140,12 @@ export default function HomePage() {
   }
 
   const statCards = [
-    { value: stats.academic_levels, label: 'Academic Levels', icon: 'GraduationCap', color: 'text-blue-500', desc: 'From Nursery to PhD' },
-    { value: stats.projects, label: 'Projects Built', icon: 'Code', color: 'text-green-500', desc: 'Web, Mobile, Blockchain' },
-    { value: stats.trades, label: 'Trades Logged', icon: 'TrendingUp', color: 'text-purple-500', desc: 'Binance, MT4, MT5' },
-    { value: stats.supporters, label: 'Supporters', icon: 'Coffee', color: 'text-amber-500', desc: 'Coffee buyers' },
-    { value: stats.followers, label: 'Followers', icon: 'Users', color: 'text-cyan-500', desc: 'Newsletter subscribers' },
-    { value: stats.days_active + '+', label: 'Days Active', icon: 'Calendar', color: 'text-white', desc: 'Building legacy' }
+    { value: stats.academic_levels, label: t('stats.academic'), icon: 'GraduationCap', color: 'text-blue-500', desc: t('stats.academicDesc') },
+    { value: stats.projects, label: t('stats.projects'), icon: 'Code', color: 'text-green-500', desc: t('stats.projectsDesc') },
+    { value: stats.trades, label: t('stats.trades'), icon: 'TrendingUp', color: 'text-purple-500', desc: t('stats.tradesDesc') },
+    { value: stats.supporters, label: t('stats.supporters'), icon: 'Coffee', color: 'text-amber-500', desc: t('stats.supportersDesc') },
+    { value: stats.followers, label: t('stats.followers'), icon: 'Users', color: 'text-cyan-500', desc: t('stats.followersDesc') },
+    { value: stats.days_active + '+', label: t('stats.daysActive'), icon: 'Calendar', color: 'text-white', desc: t('stats.daysActiveDesc') }
   ]
 
   const NewAnnouncement = () => {
@@ -159,17 +161,17 @@ export default function HomePage() {
                 <div className="flex-shrink-0">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-500 text-white text-xs font-bold rounded-full animate-pulse">
                     <IconSparkles />
-                    NEW
+                    {t('announcement.new')}
                   </span>
                 </div>
                 
                 {/* Message */}
                 <div className="flex-1">
                   <p className="text-white font-medium text-sm md:text-base">
-                    A new training has just been uploaded. Check it out now!
+                    {t('announcement.message')}
                   </p>
                   <p className="text-gray-400 text-xs mt-1">
-                    Limited spots available for this mentorship batch
+                    {t('announcement.submessage')}
                   </p>
                 </div>
               </div>
@@ -180,19 +182,19 @@ export default function HomePage() {
                   to="/service"
                   className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white text-sm font-medium rounded-lg transition shadow-lg shadow-orange-500/25"
                 >
-                  Get Mentorship
+                  {t('announcement.getMentorship')}
                   <IconArrowRight />
                 </Link>
                 <Link
                   to="/hire-me"
                   className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-sm font-medium rounded-lg transition border border-slate-700"
                 >
-                  Hire Me
+                  {t('announcement.hireMe')}
                 </Link>
                 <button
                   onClick={dismissAnnouncement}
                   className="p-2 text-gray-400 hover:text-white hover:bg-slate-800 rounded-lg transition"
-                  title="Dismiss"
+                  title={t('announcement.dismiss')}
                 >
                   <IconClose />
                 </button>
@@ -239,7 +241,7 @@ export default function HomePage() {
       </div>
 
       {/* SKILLS MATRIX - Lazy loaded */}
-      <Suspense fallback={<div className="h-32 flex items-center justify-center text-gray-400 text-sm">Loading...</div>}>
+      <Suspense fallback={<div className="h-32 flex items-center justify-center text-gray-400 text-sm">{t('common.loading')}...</div>}>
         <div className="mt-8">
           <SkillsMatrix />
         </div>
@@ -252,14 +254,14 @@ export default function HomePage() {
             <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white">
               <IconGraduationCap />
             </div>
-            <h2 className="text-2xl font-bold">Academic Journey</h2>
+            <h2 className="text-2xl font-bold">{t('sections.academic.title')}</h2>
           </div>
           <p className="text-gray-400 mb-4">
-            From Nursery School to PhD. View my complete education timeline, certificates, grades, and achievements.
+            {t('sections.academic.description')}
           </p>
           <div className="flex flex-wrap gap-2">
-            <span className="bg-slate-700 px-3 py-1 rounded-full text-sm">{stats.academic_levels} Levels</span>
-            <Link to="/academic" className="bg-blue-600 px-3 py-1 rounded-full text-sm hover:bg-blue-700">View →</Link>
+            <span className="bg-slate-700 px-3 py-1 rounded-full text-sm">{stats.academic_levels} {t('sections.academic.levels')}</span>
+            <Link to="/academic" className="bg-blue-600 px-3 py-1 rounded-full text-sm hover:bg-blue-700">{t('common.view')} →</Link>
           </div>
         </div>
 
@@ -268,14 +270,14 @@ export default function HomePage() {
             <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center text-white">
               <IconCode />
             </div>
-            <h2 className="text-2xl font-bold">Project Portfolio</h2>
+            <h2 className="text-2xl font-bold">{t('sections.projects.title')}</h2>
           </div>
           <p className="text-gray-400 mb-4">
-            See my work: Legacy Platform, Trading Journal, E-commerce System, and more. Live demos and GitHub links.
+            {t('sections.projects.description')}
           </p>
           <div className="flex flex-wrap gap-2">
-            <span className="bg-slate-700 px-3 py-1 rounded-full text-sm">{stats.projects} Projects</span>
-            <Link to="/projects" className="bg-green-600 px-3 py-1 rounded-full text-sm hover:bg-green-700">View →</Link>
+            <span className="bg-slate-700 px-3 py-1 rounded-full text-sm">{stats.projects} {t('sections.projects.projects')}</span>
+            <Link to="/projects" className="bg-green-600 px-3 py-1 rounded-full text-sm hover:bg-green-700">{t('common.view')} →</Link>
           </div>
         </div>
 
@@ -284,14 +286,14 @@ export default function HomePage() {
             <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center text-white">
               <IconTrendingUp />
             </div>
-            <h2 className="text-2xl font-bold">Trading Dashboard</h2>
+            <h2 className="text-2xl font-bold">{t('sections.trading.title')}</h2>
           </div>
           <p className="text-gray-400 mb-4">
-            Real trading history, P&L charts, win rate, strategies, and lessons learned from {stats.trades} trades.
+            {t('sections.trading.description', { count: stats.trades })}
           </p>
           <div className="flex flex-wrap gap-2">
-            <span className="bg-slate-700 px-3 py-1 rounded-full text-sm">{stats.trades} Trades</span>
-            <Link to="/trading" className="bg-purple-600 px-3 py-1 rounded-full text-sm hover:bg-purple-700">View →</Link>
+            <span className="bg-slate-700 px-3 py-1 rounded-full text-sm">{stats.trades} {t('sections.trading.trades')}</span>
+            <Link to="/trading" className="bg-purple-600 px-3 py-1 rounded-full text-sm hover:bg-purple-700">{t('common.view')} →</Link>
           </div>
         </div>
 
@@ -300,25 +302,25 @@ export default function HomePage() {
             <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center text-white">
               <IconUsers />
             </div>
-            <h2 className="text-2xl font-bold">Community</h2>
+            <h2 className="text-2xl font-bold">{t('sections.community.title')}</h2>
           </div>
           <p className="text-gray-400 mb-4">
-            Join the community! Read blogs, watch videos, view photos, and become a supporter.
+            {t('sections.community.description')}
           </p>
           <div className="flex flex-wrap gap-2">
-            <span className="bg-slate-700 px-3 py-1 rounded-full text-sm">{stats.supporters} Supporters</span>
-            <Link to="/community" className="bg-amber-600 px-3 py-1 rounded-full text-sm hover:bg-amber-700">Visit →</Link>
+            <span className="bg-slate-700 px-3 py-1 rounded-full text-sm">{stats.supporters} {t('sections.community.supporters')}</span>
+            <Link to="/community" className="bg-amber-600 px-3 py-1 rounded-full text-sm hover:bg-amber-700">{t('common.visit')} →</Link>
           </div>
         </div>
       </div>
 
       {/* Latest Blogs Section - Lazy loaded */}
-      <Suspense fallback={<div className="h-32 flex items-center justify-center text-gray-400 text-sm">Loading...</div>}>
+      <Suspense fallback={<div className="h-32 flex items-center justify-center text-gray-400 text-sm">{t('common.loading')}...</div>}>
         <BlogsSection />
       </Suspense>
 
       {/* Contact Form Section - Lazy loaded */}
-      <Suspense fallback={<div className="h-32 flex items-center justify-center text-gray-400 text-sm">Loading...</div>}>
+      <Suspense fallback={<div className="h-32 flex items-center justify-center text-gray-400 text-sm">{t('common.loading')}...</div>}>
         <ContactForm />
       </Suspense>
 

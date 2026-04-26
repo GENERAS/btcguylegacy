@@ -1,23 +1,26 @@
 ﻿import { Link, useLocation } from 'react-router-dom'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FaCrown, FaHome, FaGraduationCap, FaCode, FaChartLine, FaUsers, FaCoffee, FaBriefcase, FaUser, FaStar, FaBars, FaTimes } from 'react-icons/fa'
 import { useAuth } from '../../context/AuthContext'
 import SupporterPaymentModal from '../supporters/SupporterPaymentModal'
+import LanguageSwitcher from './LanguageSwitcher'
 
 export default function Header() {
+  const { t } = useTranslation()
   const { user, profile, signOut } = useAuth()
   const [showPaymentModal, setShowPaymentModal] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const location = useLocation()
 
   const navLinks = [
-    { path: '/', label: 'Home', icon: FaHome },
-    { path: '/academic', label: 'Academic', icon: FaGraduationCap },
-    { path: '/projects', label: 'Projects', icon: FaCode },
-    { path: '/trading', label: 'Trading', icon: FaChartLine },
-    { path: '/community', label: 'Community', icon: FaUsers },
-    { path: '/testimonials', label: 'Testimonials', icon: FaStar },
-    { path: '/service', label: 'Mentorship', icon: FaBriefcase },
+    { path: '/', label: t('nav.home'), icon: FaHome },
+    { path: '/academic', label: t('nav.academic'), icon: FaGraduationCap },
+    { path: '/projects', label: t('nav.projects'), icon: FaCode },
+    { path: '/trading', label: t('nav.trading'), icon: FaChartLine },
+    { path: '/community', label: t('nav.community'), icon: FaUsers },
+    { path: '/testimonials', label: t('nav.testimonials'), icon: FaStar },
+    { path: '/service', label: t('nav.mentorship'), icon: FaBriefcase },
   ]
 
   return (
@@ -57,12 +60,14 @@ export default function Header() {
             </nav>
 
             <div className='flex items-center gap-4'>
+              <LanguageSwitcher />
+
               <button
                 onClick={() => setShowPaymentModal(true)}
                 className='bg-amber-600 hover:bg-amber-700 px-4 py-2 rounded-lg flex items-center gap-2 transition'
               >
                 <FaCoffee className='w-4 h-4' style={{ width: '16px', height: '16px' }} />
-                <span className='hidden sm:inline'>BuyMeCoffee</span>
+                <span className='hidden sm:inline'>{t('common.buyMeCoffee')}</span>
               </button>
 
               {/* Mobile Menu Button */}
@@ -84,14 +89,14 @@ export default function Header() {
                   <div className='absolute right-0 mt-2 w-48 bg-slate-800 rounded-lg shadow-lg overflow-hidden hidden group-hover:block'>
                     {profile?.role === 'admin' && (
                       <Link to='/admin' className='block px-4 py-2 hover:bg-slate-700'>
-                        Admin Panel
+                        {t('nav.admin')}
                       </Link>
                     )}
                     <button
                       onClick={signOut}
                       className='block w-full text-left px-4 py-2 hover:bg-slate-700'
                     >
-                      Sign Out
+                      {t('nav.signOut')}
                     </button>
                   </div>
                 </div>
