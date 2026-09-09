@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
 import { FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaYoutube, FaVimeo, FaPlay } from 'react-icons/fa'
 
@@ -150,10 +150,10 @@ export default function VideoManager() {
           </h3>
           
           <div className="flex gap-2">
-            <button type="button" onClick={() => setForm({...form, platform: 'youtube'})} className={`flex-1 p-3 rounded font-medium transition ${form.platform === 'youtube' ? 'bg-red-600 text-white' : 'bg-slate-700 text-gray-300 hover:bg-slate-600'}`}>
+            <button type="button" onClick={() => setForm({...form, platform: 'youtube'})} className={`flex-1 p-3 rounded font-medium transition ${form.platform === 'youtube' ? 'bg-red-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'}`}>
               <FaYoutube className="inline mr-2" /> YouTube
             </button>
-            <button type="button" onClick={() => setForm({...form, platform: 'vimeo'})} className={`flex-1 p-3 rounded font-medium transition ${form.platform === 'vimeo' ? 'bg-blue-600 text-white' : 'bg-slate-700 text-gray-300 hover:bg-slate-600'}`}>
+            <button type="button" onClick={() => setForm({...form, platform: 'vimeo'})} className={`flex-1 p-3 rounded font-medium transition ${form.platform === 'vimeo' ? 'bg-yellow-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'}`}>
               <FaVimeo className="inline mr-2" /> Vimeo
             </button>
           </div>
@@ -165,7 +165,7 @@ export default function VideoManager() {
               placeholder="https://youtube.com/watch?v=... or video ID" 
               value={form.video_id} 
               onChange={e => { console.log('Video ID input:', e.target.value); setForm({...form, video_id: e.target.value}) }} 
-              className="w-full bg-slate-700 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+              className="w-full rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-500 " 
               required 
             />
           </div>
@@ -177,7 +177,7 @@ export default function VideoManager() {
               placeholder="Video title" 
               value={form.title} 
               onChange={e => { console.log('Title input:', e.target.value); setForm({...form, title: e.target.value}) }} 
-              className="w-full bg-slate-700 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+              className="w-full rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-500 " 
               required 
             />
           </div>
@@ -188,7 +188,7 @@ export default function VideoManager() {
               placeholder="Video description" 
               value={form.description} 
               onChange={e => setForm({...form, description: e.target.value})} 
-              className="w-full bg-slate-700 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+              className="w-full rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-500 " 
               rows="3"
             ></textarea>
           </div>
@@ -199,7 +199,7 @@ export default function VideoManager() {
               <select 
                 value={form.category} 
                 onChange={e => setForm({...form, category: e.target.value})} 
-                className="w-full bg-slate-700 rounded px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full bg-slate-700 rounded px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
               >
                 <option value="trading">Trading</option>
                 <option value="coding">Coding</option>
@@ -214,13 +214,13 @@ export default function VideoManager() {
                 placeholder="e.g. 300" 
                 value={form.duration || ''} 
                 onChange={e => setForm({...form, duration: parseInt(e.target.value) || 0})} 
-                className="w-full bg-slate-700 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                className="w-full rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-500 " 
               />
             </div>
           </div>
 
           <div className="flex gap-3 pt-2">
-            <button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded font-medium transition flex items-center justify-center gap-2">
+            <button type="submit" className="flex-1 bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-3 rounded font-medium transition flex items-center justify-center gap-2">
               <FaSave /> {editing === 'new' ? 'Add Video' : 'Update Video'}
             </button>
             <button type="button" onClick={resetForm} className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded font-medium transition">
@@ -238,7 +238,7 @@ export default function VideoManager() {
               <h3 className="font-bold truncate">{video.title}</h3>
               <p className="text-xs text-gray-400">{video.category}</p>
               <div className="flex justify-end gap-2 mt-2">
-                <button onClick={() => handleEdit(video)} className="text-blue-400"><FaEdit /></button>
+                <button onClick={() => handleEdit(video)} className="text-yellow-600 dark:text-yellow-400"><FaEdit /></button>
                 <button onClick={() => handleDelete(video.id)} className="text-red-400"><FaTrash /></button>
               </div>
             </div>

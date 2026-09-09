@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
+import { useTheme } from '../../context/ThemeContext'
 import { 
   FaCheck, FaTimes, FaReply, FaTrash, FaStar, FaRegStar,
   FaNewspaper, FaCode, FaChartLine, FaImage, FaAward,
@@ -8,6 +9,7 @@ import {
 } from 'react-icons/fa'
 
 export default function CommentModerator() {
+  const { isDark } = useTheme()
   const [comments, setComments] = useState([])
   const [systemComments, setSystemComments] = useState([])
   const [loading, setLoading] = useState(true)
@@ -119,11 +121,11 @@ export default function CommentModerator() {
   const getContentTypeIcon = (type) => {
     switch(type) {
       case 'blog': return <FaNewspaper className="text-yellow-600" />
-      case 'project': return <FaCode className="text-green-600" />
-      case 'trade': return <FaChartLine className="text-purple-600" />
+      case 'project': return <FaCode className={isDark ? 'text-green-400' : 'text-green-600'} />
+      case 'trade': return <FaChartLine className={isDark ? 'text-purple-400' : 'text-purple-600'} />
       case 'photo': return <FaImage className="text-yellow-600" />
       case 'certificate': return <FaAward className="text-yellow-600" />
-      default: return <FaNewspaper className="text-gray-600" />
+      default: return <FaNewspaper className={isDark ? 'text-gray-400' : 'text-gray-600'} />
     }
   }
 
@@ -144,7 +146,7 @@ export default function CommentModerator() {
       stars.push(
         i <= rating ? 
           <FaStar key={i} className="text-yellow-500 text-xs" /> : 
-          <FaRegStar key={i} className="text-yellow-500 text-xs" />
+          <FaRegStar key={i} className={isDark ? 'text-gray-500 text-xs' : 'text-gray-400 text-xs'} />
       )
     }
     return stars
@@ -167,10 +169,19 @@ export default function CommentModerator() {
     setNewComments(prev => ({ ...prev, [tabId]: 0 }))
   }
 
+  const bg = isDark ? 'bg-gray-800' : 'bg-white'
+  const bgSub = isDark ? 'bg-gray-700/50' : 'bg-gray-50'
+  const border = isDark ? 'border-gray-700' : 'border-gray-200'
+  const text = isDark ? 'text-white' : 'text-gray-900'
+  const textSub = isDark ? 'text-gray-300' : 'text-gray-600'
+  const textMuted = isDark ? 'text-gray-400' : 'text-gray-500'
+  const inputBg = isDark ? 'bg-gray-900/50 border-gray-600 text-white placeholder-gray-500' : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
+  const focusRing = 'focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-500'
+
   if (loading) {
     return (
       <div className="flex justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[yellow-600]"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-600"></div>
       </div>
     )
   }
@@ -180,15 +191,17 @@ export default function CommentModerator() {
       {/* Header with Stats and Notification Bell */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-gray-800">Comments</h2>
-          <p className="text-gray-600 text-sm">Manage and moderate user feedback</p>
+          <h2 className={`text-2xl font-bold ${text}`}>Comments</h2>
+          <p className={`${textSub} text-sm`}>Manage and moderate user feedback</p>
         </div>
         
         {/* Notification Bell for System Comments */}
         <div className="relative">
           <button
             onClick={() => setShowSystemBell(!showSystemBell)}
-            className="relative p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors duration-200"
+            className={`relative p-2 rounded-full transition-colors duration-200 ${
+              isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'
+            }`}
           >
             <FaExclamationTriangle className="text-yellow-600" />
             {systemComments.length > 0 && (
@@ -200,9 +213,9 @@ export default function CommentModerator() {
           
           {/* System Comments Popup */}
           {showSystemBell && (
-            <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-lg border border-gray-200 z-50 overflow-hidden">
-              <div className="p-3 border-b border-gray-200 flex justify-between items-center">
-                <h3 className="font-semibold text-gray-800">Test Comments ({systemComments.length})</h3>
+            <div className={`absolute right-0 mt-2 w-80 ${bg} rounded-xl shadow-lg border ${border} z-50 overflow-hidden`}>
+              <div className={`p-3 border-b ${border} flex justify-between items-center`}>
+                <h3 className={`font-semibold ${text}`}>Test Comments ({systemComments.length})</h3>
                 {systemComments.length > 0 && (
                   <button
                     onClick={deleteAllSystemComments}
@@ -214,17 +227,17 @@ export default function CommentModerator() {
               </div>
               <div className="max-h-64 overflow-y-auto">
                 {systemComments.length === 0 ? (
-                  <div className="p-4 text-center text-gray-600 text-sm">
+                  <div className={`p-4 text-center ${textSub} text-sm`}>
                     <FaCheck className="mx-auto mb-2 text-green-600" />
                     No test comments found
                   </div>
                 ) : (
                   systemComments.map(comment => (
-                    <div key={comment.id} className="p-3 border-b border-gray-200 hover:bg-gray-50 transition-colors duration-200">
+                    <div key={comment.id} className={`p-3 border-b ${border} ${isDark ? 'hover:bg-gray-700' : 'hover:bg-gray-50'} transition-colors duration-200`}>
                       <div className="flex justify-between items-start">
                         <div>
-                          <p className="text-sm font-medium text-gray-800">{comment.visitor_name}</p>
-                          <p className="text-xs text-gray-600 mt-1 line-clamp-2">{comment.comment_text}</p>
+                          <p className={`text-sm font-medium ${text}`}>{comment.visitor_name}</p>
+                          <p className={`text-xs ${textSub} mt-1 line-clamp-2`}>{comment.comment_text}</p>
                         </div>
                         <button
                           onClick={() => deleteSystemComment(comment.id)}
@@ -243,7 +256,7 @@ export default function CommentModerator() {
       </div>
 
       {/* Tabs with Counts and New Badges */}
-      <div className="flex flex-wrap gap-2 border-b border-gray-200 pb-2">
+      <div className={`flex flex-wrap gap-2 border-b ${border} pb-2`}>
         {tabs.map(tab => {
           const Icon = tab.icon
           const hasNew = newComments[tab.id] > 0
@@ -258,14 +271,16 @@ export default function CommentModerator() {
               className={`relative px-4 py-2 rounded-lg flex items-center gap-2 transition-colors duration-200 ${
                 activeTab === tab.id
                   ? `${tab.bgColor} text-white`
-                  : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                  : isDark
+                    ? 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+                    : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
               }`}
             >
               <Icon />
               <span>{tab.label}</span>
               {tab.count > 0 && (
                 <span className={`text-xs px-1.5 py-0.5 rounded-full ${
-                  activeTab === tab.id ? 'bg-white/20' : 'bg-gray-300'
+                  activeTab === tab.id ? 'bg-white/20' : isDark ? 'bg-gray-600' : 'bg-gray-300'
                 }`}>
                   {tab.count}
                 </span>
@@ -280,14 +295,18 @@ export default function CommentModerator() {
 
       {/* Pending Count Indicator */}
       {pendingCount > 0 && (
-        <div className="bg-yellow-100 border border-yellow-200 rounded-lg p-3 flex items-center gap-3">
+        <div className={`rounded-lg p-3 flex items-center gap-3 border ${
+          isDark ? 'bg-yellow-500/10 border-yellow-500/30' : 'bg-yellow-100 border-yellow-200'
+        }`}>
           <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
-          <span className="text-sm text-yellow-700">
+          <span className={`text-sm ${isDark ? 'text-yellow-400' : 'text-yellow-700'}`}>
             {pendingCount} comment{pendingCount !== 1 ? 's' : ''} pending approval
           </span>
           <button
             onClick={() => setActiveTab(activeTab)}
-            className="text-xs text-yellow-600 hover:text-yellow-700 transition-colors duration-200 ml-auto"
+            className={`text-xs transition-colors duration-200 ml-auto ${
+              isDark ? 'text-yellow-500 hover:text-yellow-400' : 'text-yellow-600 hover:text-yellow-700'
+            }`}
           >
             Review now →
           </button>
@@ -297,7 +316,7 @@ export default function CommentModerator() {
       {/* Comments List - Compact */}
       <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2">
         {visibleComments.length === 0 ? (
-          <div className="text-center py-12 text-gray-600">
+          <div className={`text-center py-12 ${textSub}`}>
             <FaNewspaper className="text-4xl mx-auto mb-3 opacity-50" />
             <p>No comments yet</p>
           </div>
@@ -310,7 +329,7 @@ export default function CommentModerator() {
             return (
               <div 
                 key={comment.id} 
-                className={`bg-white rounded-lg p-3 border border-gray-200 transition-colors duration-200 ${
+                className={`${bg} rounded-lg p-3 border ${border} transition-colors duration-200 ${
                   isPending ? 'border-l-4 border-l-yellow-500' : ''
                 }`}
               >
@@ -318,13 +337,15 @@ export default function CommentModerator() {
                 <div className="flex justify-between items-start">
                   <div className="flex items-center gap-2 flex-1">
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                      isPending ? 'bg-yellow-500' : 'bg-gray-200'
-                    } text-${isPending ? 'white' : 'gray-700'}`}>
+                      isPending
+                        ? 'bg-yellow-500 text-white'
+                        : isDark ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'
+                    }`}>
                       {comment.visitor_name?.charAt(0) || '?'}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-semibold text-sm text-gray-800">{comment.visitor_name}</span>
+                        <span className={`font-semibold text-sm ${text}`}>{comment.visitor_name}</span>
                         {isPending && (
                           <span className="text-xs bg-yellow-500 text-white px-1.5 py-0.5 rounded-full">Pending</span>
                         )}
@@ -332,13 +353,13 @@ export default function CommentModerator() {
                           {renderStars(comment.rating)}
                         </div>
                       </div>
-                      <p className="text-gray-700 text-sm mt-1">{comment.comment_text}</p>
+                      <p className={`${textSub} text-sm mt-1`}>{comment.comment_text}</p>
                       <div className="flex items-center gap-3 mt-1">
-                        <span className="text-xs text-gray-600 flex items-center gap-1">
+                        <span className={`text-xs ${textMuted} flex items-center gap-1`}>
                           {getContentTypeIcon(comment.content_type)}
                           {getContentTypeLabel(comment.content_type)}
                         </span>
-                        <span className="text-xs text-gray-600">
+                        <span className={`text-xs ${textMuted}`}>
                           {new Date(comment.created_at).toLocaleDateString()}
                         </span>
                       </div>
@@ -350,7 +371,7 @@ export default function CommentModerator() {
                     {isPending && (
                       <button
                         onClick={() => handleApprove(comment.id)}
-                        className="p-1.5 bg-green-600 hover:bg-green-700 rounded transition-colors duration-200"
+                        className="p-1.5 bg-green-600 hover:bg-green-700 text-white rounded transition-colors duration-200"
                         title="Approve"
                       >
                         <FaCheck size={12} />
@@ -358,14 +379,14 @@ export default function CommentModerator() {
                     )}
                     <button
                       onClick={() => setShowReply({...showReply, [comment.id]: !isExpanded})}
-                      className="p-1.5 bg-yellow-600 hover:bg-yellow-700 rounded transition-colors duration-200"
+                      className="p-1.5 bg-yellow-600 hover:bg-yellow-700 text-white rounded transition-colors duration-200"
                       title="Reply"
                     >
                       <FaReply size={12} />
                     </button>
                     <button
                       onClick={() => handleDelete(comment.id)}
-                      className="p-1.5 bg-red-600 hover:bg-red-700 rounded transition-colors duration-200"
+                      className="p-1.5 bg-red-600 hover:bg-red-700 text-white rounded transition-colors duration-200"
                       title="Delete"
                     >
                       <FaTrash size={12} />
@@ -375,7 +396,7 @@ export default function CommentModerator() {
 
                 {/* Existing Reply */}
                 {hasReply && !isExpanded && (
-                  <div className="ml-10 mt-2 text-xs text-gray-600 flex items-center gap-1">
+                  <div className={`ml-10 mt-2 text-xs ${textMuted} flex items-center gap-1`}>
                     <span className="text-yellow-600">↳ Replied:</span>
                     <span className="truncate">{comment.admin_reply}</span>
                   </div>
@@ -383,24 +404,26 @@ export default function CommentModerator() {
 
                 {/* Reply Form - Collapsible */}
                 {isExpanded && (
-                  <div className="ml-10 mt-3 p-3 bg-gray-100 rounded-lg border border-gray-200">
+                  <div className={`ml-10 mt-3 p-3 ${bgSub} rounded-lg border ${border}`}>
                     <textarea
                       value={replyText[comment.id] || ''}
                       onChange={(e) => setReplyText({...replyText, [comment.id]: e.target.value})}
                       placeholder="Write your reply..."
-                      className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500 text-gray-900"
+                      className={`w-full ${inputBg} border rounded-lg px-3 py-2 text-sm focus:outline-none ${focusRing}`}
                       rows="2"
                     />
                     <div className="flex gap-2 mt-2">
                       <button
                         onClick={() => handleReply(comment.id)}
-                        className="bg-yellow-600 hover:bg-yellow-700 px-3 py-1 rounded text-xs transition-colors duration-200"
+                        className="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded text-xs transition-colors duration-200"
                       >
                         Send
                       </button>
                       <button
                         onClick={() => setShowReply({...showReply, [comment.id]: false})}
-                        className="bg-gray-600 hover:bg-gray-700 px-3 py-1 rounded text-xs transition-colors duration-200"
+                        className={`px-3 py-1 rounded text-xs transition-colors duration-200 ${
+                          isDark ? 'bg-gray-700 hover:bg-gray-600 text-gray-200' : 'bg-gray-300 hover:bg-gray-400 text-gray-700'
+                        }`}
                       >
                         Cancel
                       </button>
@@ -416,7 +439,9 @@ export default function CommentModerator() {
         {hasMore && (
           <button
             onClick={() => setVisibleCount(prev => prev + 10)}
-            className="w-full py-2 text-center text-sm text-yellow-600 hover:text-yellow-700 transition-colors duration-200 flex items-center justify-center gap-2"
+            className={`w-full py-2 text-center text-sm transition-colors duration-200 flex items-center justify-center gap-2 ${
+              isDark ? 'text-yellow-500 hover:text-yellow-400' : 'text-yellow-600 hover:text-yellow-700'
+            }`}
           >
             <FaChevronDown size={12} />
             Load more ({filteredComments.length - visibleCount} remaining)
@@ -428,7 +453,9 @@ export default function CommentModerator() {
       <div className="flex justify-end">
         <button
           onClick={loadComments}
-          className="text-xs text-gray-600 hover:text-gray-700 transition-colors duration-200 flex items-center gap-1"
+          className={`text-xs transition-colors duration-200 flex items-center gap-1 ${
+            isDark ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-700'
+          }`}
         >
           <FaSync size={10} />
           Refresh

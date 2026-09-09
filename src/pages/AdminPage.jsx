@@ -1,11 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { useNavigate } from 'react-router-dom'
-import { 
-  FaChartLine, FaGraduationCap, FaBrain, FaCode, FaChartLine as FaTrading, 
-  FaCoffee, FaNewspaper, FaVideo, FaImages, FaCrown, FaUsers, 
-  FaComments, FaCog, FaAward, FaUser, FaBriefcase, FaStar, FaFileAlt,
-  FaRobot, FaEnvelope
+import { useTheme } from '../context/ThemeContext'
+import {
+  FaChartLine, FaGraduationCap, FaBrain, FaCode, FaCoffee, FaNewspaper,
+  FaVideo, FaImages, FaCrown, FaUsers, FaComments, FaCog, FaAward,
+  FaUser, FaBriefcase, FaStar, FaFileAlt, FaRobot, FaEnvelope,
+  FaHome, FaBars, FaTimes, FaSignOutAlt, FaChevronLeft
 } from 'react-icons/fa'
 import AdminDashboard from '../components/admin/AdminDashboard'
 import AcademicManager from '../components/admin/AcademicManager'
@@ -30,16 +31,92 @@ import AnalyticsAdmin from '../components/admin/AnalyticsAdmin'
 import NotificationCenter from '../components/admin/NotificationCenter'
 import SettingsManager from '../components/admin/SettingsManager'
 
+const navSections = [
+  {
+    title: 'Overview',
+    items: [
+      { id: 'dashboard', label: 'Dashboard', icon: FaChartLine },
+      { id: 'analytics', label: 'Analytics', icon: FaChartLine },
+    ]
+  },
+  {
+    title: 'Content',
+    items: [
+      { id: 'blogs', label: 'Blogs', icon: FaNewspaper },
+      { id: 'projects', label: 'Projects', icon: FaCode },
+      { id: 'videos', label: 'Videos', icon: FaVideo },
+      { id: 'photos', label: 'Photos', icon: FaImages },
+      { id: 'testimonials', label: 'Testimonials', icon: FaStar },
+      { id: 'certificates', label: 'Certificates', icon: FaAward },
+    ]
+  },
+  {
+    title: 'Academic',
+    items: [
+      { id: 'academic', label: 'Academic Levels', icon: FaGraduationCap },
+      { id: 'academic-reports', label: 'School Reports', icon: FaFileAlt },
+      { id: 'skills', label: 'Skills', icon: FaBrain },
+    ]
+  },
+  {
+    title: 'Business',
+    items: [
+      { id: 'trading', label: 'Trading', icon: FaChartLine },
+      { id: 'coffee', label: 'Coffee Supporters', icon: FaCoffee },
+      { id: 'supporters', label: 'Supporters', icon: FaCrown },
+    ]
+  },
+  {
+    title: 'Engagement',
+    items: [
+      { id: 'mentorship', label: 'Mentorship', icon: FaUser },
+      { id: 'inquiries', label: 'Inquiries', icon: FaBriefcase },
+      { id: 'ai-leads', label: 'AI Leads', icon: FaRobot },
+      { id: 'contact-messages', label: 'Messages', icon: FaEnvelope },
+      { id: 'comments', label: 'Comments', icon: FaComments },
+      { id: 'followers', label: 'Followers', icon: FaUsers },
+    ]
+  },
+  {
+    title: 'System',
+    items: [
+      { id: 'settings', label: 'Settings', icon: FaCog },
+    ]
+  }
+]
+
+const allTabs = navSections.flatMap(s => s.items)
+
 export default function AdminPage() {
-  const { user, profile, isAdmin, loading } = useAuth()
+  const { user, profile, isAdmin, loading, signOut } = useAuth()
+  const { isDark } = useTheme()
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('dashboard')
+  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [mobileOpen, setMobileOpen] = useState(false)
 
-  // Redirect if not authenticated or not admin
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1024) {
+        setSidebarOpen(false)
+      } else {
+        setSidebarOpen(true)
+      }
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const handleNav = (id) => {
+    setActiveTab(id)
+    setMobileOpen(false)
+  }
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      <div className={`min-h-screen flex items-center justify-center ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
+        <div className="animate-spin rounded-full h-10 w-10 border-2 border-yellow-600 border-t-transparent"></div>
       </div>
     )
   }
@@ -49,78 +126,181 @@ export default function AdminPage() {
     return null
   }
 
-  const tabs = [
-    { id: 'dashboard', label: 'Dashboard', icon: FaChartLine },
-    { id: 'academic', label: 'Academic', icon: FaGraduationCap },
-    { id: 'academic-reports', label: 'School Reports', icon: FaFileAlt },
-    { id: 'skills', label: 'Skills', icon: FaBrain },
-    { id: 'projects', label: 'Projects', icon: FaCode },
-    { id: 'trading', label: 'Trading', icon: FaTrading },
-    { id: 'coffee', label: 'Coffee', icon: FaCoffee },
-    { id: 'blogs', label: 'Blogs', icon: FaNewspaper },
-    { id: 'videos', label: 'Videos', icon: FaVideo },
-    { id: 'photos', label: 'Photos', icon: FaImages },
-    { id: 'supporters', label: 'Supporters', icon: FaCrown },
-    { id: 'followers', label: 'Followers', icon: FaUsers },
-    { id: 'comments', label: 'Comments', icon: FaComments },
-    { id: 'settings', label: 'Settings', icon: FaCog },
-    { id: 'certificates', label: 'Certificates', icon: FaAward },
-    { id: 'mentorship', label: 'Mentorship Apps', icon: FaUser },
-    { id: 'inquiries', label: 'Project Inquiries', icon: FaBriefcase },
-    { id: 'ai-leads', label: 'AI Leads', icon: FaRobot },
-    { id: 'contact-messages', label: 'Contact Messages', icon: FaEnvelope },
-    { id: 'analytics', label: 'Analytics', icon: FaChartLine },
-    { id: 'testimonials', label: 'Testimonials', icon: FaStar },
-  ]
+  const currentLabel = allTabs.find(t => t.id === activeTab)?.label || 'Dashboard'
+
+  const SidebarContent = ({ collapsed }) => (
+    <div className="flex flex-col h-full">
+      <div className={`p-4 border-b ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
+        {!collapsed ? (
+          <Link to="/" className="flex items-center gap-2">
+            <img src="/logo.png" alt="Logo" className="h-8 w-auto" />
+            <span className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>GENERAS</span>
+          </Link>
+        ) : (
+          <Link to="/" className="flex justify-center">
+            <img src="/logo.png" alt="Logo" className="h-8 w-auto" />
+          </Link>
+        )}
+      </div>
+
+      <nav className="flex-1 overflow-y-auto py-3 px-2">
+        {navSections.map((section) => (
+          <div key={section.title} className="mb-4">
+            {!collapsed && (
+              <p className={`px-3 mb-1.5 text-[11px] font-semibold uppercase tracking-wider ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                {section.title}
+              </p>
+            )}
+            {section.items.map((item) => {
+              const Icon = item.icon
+              const isActive = activeTab === item.id
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNav(item.id)}
+                  title={collapsed ? item.label : undefined}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 mb-0.5 ${
+                    isActive
+                      ? 'bg-yellow-600 text-white shadow-sm'
+                      : isDark
+                        ? 'text-gray-400 hover:bg-gray-700 hover:text-gray-200'
+                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                  } ${collapsed ? 'justify-center' : ''}`}
+                >
+                  <Icon className="w-4 h-4 flex-shrink-0" />
+                  {!collapsed && <span>{item.label}</span>}
+                </button>
+              )
+            })}
+          </div>
+        ))}
+      </nav>
+
+      <div className={`p-3 border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
+        {!collapsed ? (
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-yellow-500 to-yellow-700 flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">
+              {(profile?.full_name || user.email || 'U').charAt(0).toUpperCase()}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className={`text-sm font-medium truncate ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                {profile?.full_name || user.email?.split('@')[0]}
+              </p>
+              <p className={`text-xs truncate ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                Admin
+              </p>
+            </div>
+            <button
+              onClick={() => { signOut(); navigate('/') }}
+              className={`p-2 rounded-lg transition-colors ${isDark ? 'text-gray-400 hover:bg-gray-700 hover:text-red-400' : 'text-gray-400 hover:bg-gray-100 hover:text-red-500'}`}
+              title="Sign Out"
+            >
+              <FaSignOutAlt className="w-4 h-4" />
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => { signOut(); navigate('/') }}
+            className={`w-full flex justify-center p-2 rounded-lg transition-colors ${isDark ? 'text-gray-400 hover:bg-gray-700 hover:text-red-400' : 'text-gray-400 hover:bg-gray-100 hover:text-red-500'}`}
+            title="Sign Out"
+          >
+            <FaSignOutAlt className="w-4 h-4" />
+          </button>
+        )}
+      </div>
+    </div>
+  )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white p-4 md:p-6">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Admin Control Center</h1>
-        <NotificationCenter />
-      </div>
+    <div className={`min-h-screen flex ${isDark ? 'bg-gray-900 text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
+      {/* Desktop sidebar */}
+      <aside
+        className={`hidden lg:flex flex-col fixed top-0 left-0 h-screen z-30 transition-all duration-200 border-r ${
+          isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+        } ${sidebarOpen ? 'w-60' : 'w-16'}`}
+      >
+        <SidebarContent collapsed={!sidebarOpen} />
+      </aside>
 
-      {/* Tabs */}
-      <div className="flex flex-wrap gap-2 mb-8 pb-2 border-b border-slate-700">
-        {tabs.map(tab => {
-          const Icon = tab.icon
-          return (
+      {/* Mobile sidebar overlay */}
+      {mobileOpen && (
+        <div className="lg:hidden fixed inset-0 z-40">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
+          <aside className={`relative w-64 h-full ${isDark ? 'bg-gray-800' : 'bg-white'} shadow-xl`}>
             <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`whitespace-nowrap text-sm sm:text-base px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg flex items-center gap-1.5 sm:gap-2 transition ${
-                activeTab === tab.id ? 'bg-blue-600' : 'bg-slate-800 hover:bg-slate-700'
-              }`}
+              onClick={() => setMobileOpen(false)}
+              className={`absolute top-3 right-3 p-1.5 rounded-lg ${isDark ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-400 hover:bg-gray-100'}`}
             >
-              <Icon /> {tab.label}
+              <FaTimes className="w-4 h-4" />
             </button>
-          )
-        })}
-      </div>
+            <SidebarContent collapsed={false} />
+          </aside>
+        </div>
+      )}
 
-      {/* Content */}
-      <div className="bg-slate-800/30 rounded-xl p-6">
-        {activeTab === 'dashboard' && <AdminDashboard />}
-        {activeTab === 'academic' && <AcademicManager />}
-        {activeTab === 'academic-reports' && <AcademicReportsManager />}
-        {activeTab === 'skills' && <SkillsManager />}
-        {activeTab === 'projects' && <ProjectsManager />}
-        {activeTab === 'trading' && <TradingManager />}
-        {activeTab === 'coffee' && <CoffeeManager />}
-        {activeTab === 'blogs' && <BlogManager />}
-        {activeTab === 'videos' && <VideoManager />}
-        {activeTab === 'photos' && <PhotoManager />}
-        {activeTab === 'supporters' && <SupporterManager />}
-        {activeTab === 'followers' && <FollowerManager />}
-        {activeTab === 'comments' && <CommentModerator />}
-        {activeTab === 'settings' && <SettingsManager />}
-        {activeTab === 'certificates' && <CertificatesManager />}
-        {activeTab === 'mentorship' && <MentorshipManager />}
-        {activeTab === 'inquiries' && <ProjectInquiriesManager />}
-        {activeTab === 'ai-leads' && <AiLeadsManager />}
-        {activeTab === 'contact-messages' && <ContactMessagesManager />}
-        {activeTab === 'analytics' && <AnalyticsAdmin />}
-        {activeTab === 'testimonials' && <TestimonialsManager />}
+      {/* Main content */}
+      <div className={`flex-1 flex flex-col transition-all duration-200 ${sidebarOpen ? 'lg:ml-60' : 'lg:ml-16'}`}>
+        {/* Top bar */}
+        <header className={`sticky top-0 z-20 flex items-center justify-between px-4 lg:px-6 h-14 border-b backdrop-blur-sm ${
+          isDark ? 'bg-gray-900/80 border-gray-700' : 'bg-white/80 border-gray-200'
+        }`}>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => {
+                if (window.innerWidth < 1024) {
+                  setMobileOpen(true)
+                } else {
+                  setSidebarOpen(!sidebarOpen)
+                }
+              }}
+              className={`p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-gray-100 text-gray-500'}`}
+            >
+              {(mobileOpen || sidebarOpen) && window.innerWidth >= 1024
+                ? <FaChevronLeft className="w-4 h-4" />
+                : <FaBars className="w-4 h-4" />
+              }
+            </button>
+            <h1 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              {currentLabel}
+            </h1>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <NotificationCenter />
+            <Link
+              to="/"
+              className={`p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-gray-100 text-gray-500'}`}
+              title="View Site"
+            >
+              <FaHome className="w-4 h-4" />
+            </Link>
+          </div>
+        </header>
+
+        {/* Page content */}
+        <main className="flex-1 p-4 lg:p-6 overflow-auto">
+          {activeTab === 'dashboard' && <AdminDashboard />}
+          {activeTab === 'academic' && <AcademicManager />}
+          {activeTab === 'academic-reports' && <AcademicReportsManager />}
+          {activeTab === 'skills' && <SkillsManager />}
+          {activeTab === 'projects' && <ProjectsManager />}
+          {activeTab === 'trading' && <TradingManager />}
+          {activeTab === 'coffee' && <CoffeeManager />}
+          {activeTab === 'blogs' && <BlogManager />}
+          {activeTab === 'videos' && <VideoManager />}
+          {activeTab === 'photos' && <PhotoManager />}
+          {activeTab === 'supporters' && <SupporterManager />}
+          {activeTab === 'followers' && <FollowerManager />}
+          {activeTab === 'comments' && <CommentModerator />}
+          {activeTab === 'settings' && <SettingsManager />}
+          {activeTab === 'certificates' && <CertificatesManager />}
+          {activeTab === 'mentorship' && <MentorshipManager />}
+          {activeTab === 'inquiries' && <ProjectInquiriesManager />}
+          {activeTab === 'ai-leads' && <AiLeadsManager />}
+          {activeTab === 'contact-messages' && <ContactMessagesManager />}
+          {activeTab === 'analytics' && <AnalyticsAdmin />}
+          {activeTab === 'testimonials' && <TestimonialsManager />}
+        </main>
       </div>
     </div>
   )

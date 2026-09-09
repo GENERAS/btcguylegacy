@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
 import { FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaGithub, FaExternalLinkAlt } from 'react-icons/fa'
 
@@ -117,7 +117,7 @@ export default function ProjectsManager() {
           <label className="text-sm text-gray-400">Tech Stack</label>
           <div className="flex gap-2 mt-1">
             <input type="text" value={techInput} onChange={e => setTechInput(e.target.value)} onKeyPress={e => e.key === 'Enter' && (e.preventDefault(), addTech())} placeholder="Add technology (React, Tailwind, etc.)" className="flex-1 bg-slate-700 rounded px-3 py-2" />
-            <button type="button" onClick={addTech} className="bg-blue-600 px-4 py-2 rounded">Add</button>
+            <button type="button" onClick={addTech} className="bg-yellow-600 px-4 py-2 rounded">Add</button>
           </div>
           <div className="flex flex-wrap gap-2 mt-2">
             {form.tech_stack.map(tech => (
@@ -138,7 +138,7 @@ export default function ProjectsManager() {
         </div>
 
         <div className="flex gap-2">
-          <button type="submit" className="bg-blue-600 px-4 py-2 rounded flex items-center gap-2"><FaSave /> {editing ? 'Update' : 'Add Project'}</button>
+          <button type="submit" className="bg-yellow-600 px-4 py-2 rounded flex items-center gap-2"><FaSave /> {editing ? 'Update' : 'Add Project'}</button>
           {editing && <button type="button" onClick={resetForm} className="bg-gray-600 px-4 py-2 rounded">Cancel</button>}
         </div>
       </form>
@@ -157,7 +157,7 @@ export default function ProjectsManager() {
               </div>
             </div>
             <div className="flex gap-2">
-              <button onClick={() => handleEdit(project)} className="text-blue-400"><FaEdit /></button>
+              <button onClick={() => handleEdit(project)} className="text-yellow-600 dark:text-yellow-400"><FaEdit /></button>
               <button onClick={() => handleDelete(project.id)} className="text-red-400"><FaTrash /></button>
             </div>
           </div>

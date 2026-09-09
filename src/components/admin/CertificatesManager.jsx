@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
 import { FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaAward, FaLink, FaBox, FaFileAlt, FaUpload, FaImage } from 'react-icons/fa'
 
@@ -256,7 +256,7 @@ export default function CertificatesManager() {
                   onClick={() => setForm({...form, certificate_type: 'digital'})}
                   className={`p-4 rounded-lg border-2 transition ${
                     form.certificate_type === 'digital'
-                      ? 'border-blue-500 bg-blue-500/20'
+                      ? 'border-yellow-500 bg-blue-500/20'
                       : 'border-slate-700 bg-slate-800 hover:border-slate-500'
                   }`}
                 >
@@ -341,7 +341,7 @@ export default function CertificatesManager() {
                     >
                       {uploading ? (
                         <div className="flex flex-col items-center">
-                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mb-2"></div>
+                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500 mb-2"></div>
                           <p className="text-sm text-gray-400">Uploading...</p>
                         </div>
                       ) : form.hard_copy_image_url ? (
@@ -407,7 +407,7 @@ export default function CertificatesManager() {
           </div>
 
           <div className="flex gap-2 pt-4 sticky bottom-0 bg-slate-800 py-2">
-            <button type="submit" className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg flex items-center gap-2">
+            <button type="submit" className="bg-yellow-600 hover:bg-yellow-700 px-6 py-2 rounded-lg flex items-center gap-2">
               <FaSave /> {editing === 'new' ? 'Add Certificate' : 'Update Certificate'}
             </button>
             <button type="button" onClick={resetForm} className="bg-gray-600 hover:bg-gray-700 px-6 py-2 rounded-lg">
@@ -428,7 +428,7 @@ export default function CertificatesManager() {
               </div>
               <span className={`text-xs px-2 py-1 rounded-full ${
                 cert.certificate_type === 'digital' 
-                  ? 'bg-blue-600' 
+                  ? 'bg-yellow-600' 
                   : 'bg-amber-600'
               }`}>
                 {cert.certificate_type === 'digital' ? '💻 Digital' : '📦 Hard Copy'}
@@ -467,7 +467,7 @@ export default function CertificatesManager() {
                   href={cert.certificate_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-400 hover:text-blue-300 text-sm flex items-center gap-1"
+                  className="text-yellow-600 hover:text-yellow-500 dark:text-yellow-400 dark:hover:text-yellow-300 text-sm flex items-center gap-1"
                 >
                   View Certificate →
                 </a>
@@ -489,7 +489,7 @@ export default function CertificatesManager() {
             )}
 
             <div className="flex justify-end gap-2 mt-3 pt-3 border-t border-slate-700">
-              <button onClick={() => handleEdit(cert)} className="text-blue-400 hover:text-blue-300">
+              <button onClick={() => handleEdit(cert)} className="text-yellow-600 hover:text-yellow-500 dark:text-yellow-400 dark:hover:text-yellow-300">
                 <FaEdit />
               </button>
               <button onClick={() => handleDelete(cert.id)} className="text-red-400 hover:text-red-300">

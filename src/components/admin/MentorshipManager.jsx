@@ -1,4 +1,4 @@
-// src/components/admin/MentorshipManager.jsx
+﻿// src/components/admin/MentorshipManager.jsx
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { sendPaymentVerifiedEmail } from '../../utils/emailService';
@@ -209,13 +209,13 @@ const MentorshipManager = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-8">
-        <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-blue-500">
+        <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-yellow-500">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-500 text-sm">Total Applications</p>
               <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
             </div>
-            <Users className="w-8 h-8 text-blue-500" />
+            <Users className="w-8 h-8 text-yellow-600 dark:text-yellow-400" />
           </div>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-yellow-500">
@@ -276,7 +276,7 @@ const MentorshipManager = () => {
                 placeholder="Search by name, email, or reference..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500"
               />
             </div>
           </div>
@@ -287,7 +287,7 @@ const MentorshipManager = () => {
                 onClick={() => setFilter(f)}
                 className={`px-4 py-2 rounded-lg capitalize transition-all ${
                   filter === f 
-                    ? 'bg-blue-600 text-white' 
+                    ? 'bg-yellow-600 text-white' 
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -308,7 +308,7 @@ const MentorshipManager = () => {
       {/* Applications List */}
       {loading ? (
         <div className="flex items-center justify-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-600"></div>
         </div>
       ) : filteredApplications.length === 0 ? (
         <div className="bg-white rounded-xl shadow-sm p-12 text-center">
@@ -462,7 +462,7 @@ const MentorshipManager = () => {
                               href={app.payment_screenshot_url} 
                               target="_blank" 
                               rel="noopener noreferrer"
-                              className="text-blue-600 hover:underline flex items-center gap-1"
+                              className="text-yellow-600 hover:underline flex items-center gap-1"
                             >
                               <Image className="w-4 h-4" />
                               View Screenshot

@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
 import { FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaCoffee } from 'react-icons/fa'
+import { useTheme } from '../../context/ThemeContext'
 
 export default function CoffeeManager() {
+  const { isDark } = useTheme()
   const [supporters, setSupporters] = useState([])
   const [editing, setEditing] = useState(null)
   const [form, setForm] = useState({ 
@@ -13,6 +15,15 @@ export default function CoffeeManager() {
     show_in_hall: true 
   })
   const [loading, setLoading] = useState(true)
+
+  const bg = isDark ? 'bg-gray-800' : 'bg-white'
+  const bgSub = isDark ? 'bg-gray-700/50' : 'bg-gray-50'
+  const border = isDark ? 'border-gray-700' : 'border-gray-200'
+  const text = isDark ? 'text-white' : 'text-gray-900'
+  const textSub = isDark ? 'text-gray-300' : 'text-gray-600'
+  const textMuted = isDark ? 'text-gray-400' : 'text-gray-500'
+  const inputBg = isDark ? 'bg-gray-900/50 border-gray-600 text-white placeholder-gray-500' : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
+  const focusRing = 'focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-500'
 
   useEffect(() => { 
     loadSupporters()
@@ -84,82 +95,83 @@ export default function CoffeeManager() {
     setForm({ name: '', email: '', cups: 1, message: '', show_in_hall: true })
   }
 
-  if (loading) return <div>Loading supporters...</div>
+  if (loading) return <div className={text}>Loading supporters...</div>
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">Coffee Supporters Manager</h2>
+      <h2 className={`text-2xl font-bold mb-4 ${text}`}>Coffee Supporters Manager</h2>
 
       <button 
         onClick={() => setEditing('new')} 
-        className="bg-green-600 px-4 py-2 rounded flex items-center gap-2 mb-4"
+        className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded flex items-center gap-2 mb-4 transition-colors"
       >
         <FaPlus /> Add Supporter
       </button>
 
       {/* Form */}
       {(editing === 'new' || editing) && (
-        <form onSubmit={handleSubmit} className="bg-slate-800 p-6 rounded-lg mb-6 space-y-4 border border-slate-600">
-          <h3 className="text-xl font-bold">
+        <form onSubmit={handleSubmit} className={`${bg} ${border} border p-6 rounded-lg mb-6 space-y-4`}>
+          <h3 className={`text-xl font-bold ${text}`}>
             {editing === 'new' ? 'Add New Supporter' : 'Edit Supporter'}
           </h3>
           
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Name</label>
+            <label className={`block text-sm ${textMuted} mb-1`}>Name</label>
             <input 
               type="text" 
               value={form.name} 
               onChange={e => setForm({...form, name: e.target.value})} 
-              className="w-full bg-slate-700 rounded px-4 py-2"
+              className={`w-full ${inputBg} ${focusRing} border rounded px-4 py-2`}
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Email</label>
+            <label className={`block text-sm ${textMuted} mb-1`}>Email</label>
             <input 
               type="email" 
               value={form.email} 
               onChange={e => setForm({...form, email: e.target.value})} 
-              className="w-full bg-slate-700 rounded px-4 py-2"
+              className={`w-full ${inputBg} ${focusRing} border rounded px-4 py-2`}
             />
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Cups of Coffee</label>
+            <label className={`block text-sm ${textMuted} mb-1`}>Cups of Coffee</label>
             <input 
               type="number" 
               min="1"
               value={form.cups} 
               onChange={e => setForm({...form, cups: parseInt(e.target.value)})} 
-              className="w-full bg-slate-700 rounded px-4 py-2"
+              className={`w-full ${inputBg} ${focusRing} border rounded px-4 py-2`}
             />
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Message</label>
+            <label className={`block text-sm ${textMuted} mb-1`}>Message</label>
             <textarea 
               value={form.message} 
               onChange={e => setForm({...form, message: e.target.value})} 
-              className="w-full bg-slate-700 rounded px-4 py-2"
+              className={`w-full ${inputBg} ${focusRing} border rounded px-4 py-2`}
               rows="2"
             />
           </div>
 
-          <label className="flex items-center gap-2">
+          <label className={`flex items-center gap-2 ${textSub}`}>
             <input 
               type="checkbox" 
               checked={form.show_in_hall} 
               onChange={e => setForm({...form, show_in_hall: e.target.checked})}
+              className="accent-yellow-600"
             />
             Show in Supporters Hall
           </label>
 
           <div className="flex gap-2">
-            <button type="submit" className="bg-blue-600 px-4 py-2 rounded flex items-center gap-2">
+            <button type="submit" className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded flex items-center gap-2 transition-colors">
               <FaSave /> {editing === 'new' ? 'Add' : 'Update'}
             </button>
-            <button type="button" onClick={resetForm} className="bg-gray-600 px-4 py-2 rounded">
+            <button type="button" onClick={resetForm} className={`${isDark ? 'bg-gray-600 hover:bg-gray-500 text-white' : 'bg-gray-300 hover:bg-gray-400 text-gray-900'} px-4 py-2 rounded transition-colors`}>
               Cancel
             </button>
           </div>
@@ -169,27 +181,27 @@ export default function CoffeeManager() {
       {/* List */}
       <div className="grid gap-4">
         {supporters.map(supporter => (
-          <div key={supporter.id} className="bg-slate-800 p-4 rounded-lg flex items-center justify-between">
+          <div key={supporter.id} className={`${bg} ${border} border p-4 rounded-lg flex items-center justify-between`}>
             <div className="flex items-center gap-3">
               <FaCoffee className="text-amber-500 text-2xl" />
               <div>
-                <h3 className="font-bold">{supporter.name}</h3>
-                <p className="text-sm text-gray-400">{supporter.cups} cups • {supporter.email || 'No email'}</p>
-                {supporter.message && <p className="text-sm text-gray-500 italic">"{supporter.message}"</p>}
+                <h3 className={`font-bold ${text}`}>{supporter.name}</h3>
+                <p className={`text-sm ${textMuted}`}>{supporter.cups} cups • {supporter.email || 'No email'}</p>
+                {supporter.message && <p className={`text-sm italic ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>"{supporter.message}"</p>}
               </div>
             </div>
             <div className="flex gap-2">
-              <button onClick={() => handleEdit(supporter)} className="bg-blue-600 p-2 rounded">
+              <button onClick={() => handleEdit(supporter)} className={`${isDark ? 'bg-blue-600 hover:bg-yellow-500' : 'bg-blue-500 hover:bg-yellow-600'} text-white p-2 rounded transition-colors`}>
                 <FaEdit />
               </button>
-              <button onClick={() => handleDelete(supporter.id)} className="bg-red-600 p-2 rounded">
+              <button onClick={() => handleDelete(supporter.id)} className={`${isDark ? 'bg-red-600 hover:bg-red-500' : 'bg-red-500 hover:bg-red-600'} text-white p-2 rounded transition-colors`}>
                 <FaTrash />
               </button>
             </div>
           </div>
         ))}
         {supporters.length === 0 && (
-          <p className="text-gray-400 text-center py-8">No supporters yet</p>
+          <p className={`${textMuted} text-center py-8`}>No supporters yet</p>
         )}
       </div>
     </div>

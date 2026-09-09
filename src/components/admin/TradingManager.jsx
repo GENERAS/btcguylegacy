@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
 import { FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaUpload } from 'react-icons/fa'
 import { usdToRwf } from '../../utils/currency'
@@ -320,7 +320,7 @@ export default function TradingManager() {
                 className="flex-1 bg-slate-700 rounded px-3 py-2"
                 placeholder="Add tag (e.g., Scalping, Day Trading)"
               />
-              <button type="button" onClick={addTag} className="bg-blue-600 px-4 py-2 rounded">
+              <button type="button" onClick={addTag} className="bg-yellow-600 px-4 py-2 rounded">
                 Add
               </button>
             </div>
@@ -357,7 +357,7 @@ export default function TradingManager() {
           </div>
 
           <div className="flex gap-2 pt-4">
-            <button type="submit" className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg flex items-center gap-2">
+            <button type="submit" className="bg-yellow-600 hover:bg-yellow-700 px-6 py-2 rounded-lg flex items-center gap-2">
               <FaSave /> {editing === 'new' ? 'Add Trade' : 'Update Trade'}
             </button>
             <button type="button" onClick={resetForm} className="bg-gray-600 hover:bg-gray-700 px-6 py-2 rounded-lg">
@@ -397,7 +397,7 @@ export default function TradingManager() {
                   )}
                 </div>
                 <div className="flex gap-2">
-                  <button onClick={() => handleEdit(trade)} className="text-blue-400 hover:text-blue-300">
+                  <button onClick={() => handleEdit(trade)} className="text-yellow-600 hover:text-yellow-500 dark:text-yellow-400 dark:hover:text-yellow-300">
                     <FaEdit />
                   </button>
                   <button onClick={() => handleDelete(trade.id)} className="text-red-400 hover:text-red-300">

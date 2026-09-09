@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
 import { 
   FaCrown, FaSearch, FaEdit, FaTrash, FaDownload, FaStar, 
@@ -178,19 +178,19 @@ export default function SupporterManager() {
       <div className="flex gap-2 mb-4">
         <button 
           onClick={() => setFilter('all')}
-          className={`px-4 py-2 rounded-lg text-sm ${filter === 'all' ? 'bg-blue-600 text-white' : 'bg-slate-700 text-gray-300'}`}
+          className={`px-4 py-2 rounded-lg text-sm ${filter === 'all' ? 'bg-yellow-600 text-white' : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'}`}
         >
           All
         </button>
         <button 
           onClick={() => setFilter('pending')}
-          className={`px-4 py-2 rounded-lg text-sm ${filter === 'pending' ? 'bg-yellow-600 text-white' : 'bg-slate-700 text-gray-300'}`}
+          className={`px-4 py-2 rounded-lg text-sm ${filter === 'pending' ? 'bg-yellow-600 text-white' : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'}`}
         >
           Pending ({supporters.filter(s => s.payment_status !== 'verified').length})
         </button>
         <button 
           onClick={() => setFilter('verified')}
-          className={`px-4 py-2 rounded-lg text-sm ${filter === 'verified' ? 'bg-green-600 text-white' : 'bg-slate-700 text-gray-300'}`}
+          className={`px-4 py-2 rounded-lg text-sm ${filter === 'verified' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'}`}
         >
           Verified
         </button>
@@ -260,14 +260,14 @@ export default function SupporterManager() {
                     href={s.payment_screenshot_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-400 hover:text-blue-300"
+                    className="text-yellow-600 hover:text-yellow-500 dark:text-yellow-400 dark:hover:text-yellow-300"
                   >
                     <FaImage />
                   </a>
                 )}
                 <button 
                   onClick={() => {setSelectedSupporter(s); setAdminNotes(s.admin_notes || '')}}
-                  className="text-blue-400 hover:text-blue-300"
+                  className="text-yellow-600 hover:text-yellow-500 dark:text-yellow-400 dark:hover:text-yellow-300"
                 >
                   <FaEdit />
                 </button>
@@ -306,7 +306,7 @@ export default function SupporterManager() {
               </button>
               <button 
                 onClick={() => updateAdminNotes(selectedSupporter.id)}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 py-2 rounded"
+                className="flex-1 bg-yellow-600 hover:bg-yellow-700 py-2 rounded"
               >
                 Save Notes
               </button>

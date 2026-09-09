@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
 import { FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaUpload, FaFilePdf, FaImages, FaUserTie } from 'react-icons/fa'
 
@@ -172,7 +172,7 @@ export default function AcademicReportsManager() {
   const getTypeIcon = (type) => {
     switch (type) {
       case 'school_report': return <FaFilePdf className="text-red-400" />
-      case 'uniform_photo': return <FaUserTie className="text-blue-400" />
+      case 'uniform_photo': return <FaUserTie className="text-yellow-600 dark:text-yellow-400" />
       case 'school_photo': return <FaImages className="text-green-400" />
       default: return <FaFilePdf className="text-gray-400" />
     }
@@ -302,7 +302,7 @@ export default function AcademicReportsManager() {
                 className="bg-slate-700 rounded px-3 py-2 flex-1"
                 required
               />
-              <label className="bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded cursor-pointer flex items-center">
+              <label className="bg-yellow-600 hover:bg-yellow-700 px-3 py-2 rounded cursor-pointer flex items-center">
                 <FaUpload />
                 <input 
                   type="file" 
@@ -364,7 +364,7 @@ export default function AcademicReportsManager() {
         <div className="flex gap-2">
           <button 
             type="submit" 
-            className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded flex items-center gap-2"
+            className="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded flex items-center gap-2"
             disabled={uploading}
           >
             <FaSave /> {editing ? 'Update' : 'Add'}
@@ -450,7 +450,7 @@ export default function AcademicReportsManager() {
                 <div className="flex gap-2">
                   <button 
                     onClick={() => handleEdit(report)}
-                    className="bg-blue-600/50 hover:bg-blue-600 px-3 py-1 rounded text-sm flex items-center gap-1"
+                    className="bg-blue-600/50 hover:bg-yellow-600 px-3 py-1 rounded text-sm flex items-center gap-1"
                   >
                     <FaEdit /> Edit
                   </button>

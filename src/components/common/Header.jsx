@@ -1,5 +1,5 @@
 ﻿import { Link, useLocation } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../context/AuthContext'
 import SupporterPaymentModal from '../supporters/SupporterPaymentModal'
@@ -12,7 +12,19 @@ export default function Header() {
   const { user, profile, signOut } = useAuth()
   const [showPaymentModal, setShowPaymentModal] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false)
+  const profileRef = useRef(null)
   const location = useLocation()
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
+        setProfileMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   const navLinks = [
     { path: '/', label: t('nav.home') },
@@ -74,23 +86,32 @@ export default function Header() {
               </button>
 
               {user && (
-                <div className='relative group'>
-                  <button className='text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200 font-medium'>
-                    {profile?.full_name || user.email?.split('@')[0]}
+                <div className='relative' ref={profileRef}>
+                  <button
+                    onClick={() => setProfileMenuOpen(!profileMenuOpen)}
+                    className='w-9 h-9 rounded-full bg-gradient-to-br from-[#714B67] to-[#A67B9D] flex items-center justify-center text-white font-semibold text-sm hover:ring-2 hover:ring-[#714B67]/50 transition-all duration-200'
+                  >
+                    {(profile?.full_name || user.email || 'U').charAt(0).toUpperCase()}
                   </button>
-                  <div className='absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden hidden group-hover:block rounded-lg'>
-                    {profile?.role === 'admin' && (
-                      <Link to='/admin' className='block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-200'>
-                        {t('nav.admin')}
-                      </Link>
-                    )}
-                    <button
-                      onClick={signOut}
-                      className='block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-200'
-                    >
-                      {t('nav.signOut')}
-                    </button>
-                  </div>
+                  {profileMenuOpen && (
+                    <div className='absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden rounded-lg z-50'>
+                      <div className='px-4 py-3 border-b border-gray-100 dark:border-gray-700'>
+                        <p className='text-sm font-medium text-gray-900 dark:text-white truncate'>{profile?.full_name || user.email?.split('@')[0]}</p>
+                        <p className='text-xs text-gray-500 dark:text-gray-400 truncate'>{user.email}</p>
+                      </div>
+                      {profile?.role === 'admin' && (
+                        <Link to='/admin' onClick={() => setProfileMenuOpen(false)} className='block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200'>
+                          {t('nav.admin')}
+                        </Link>
+                      )}
+                      <button
+                        onClick={() => { setProfileMenuOpen(false); signOut() }}
+                        className='block w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-200'
+                      >
+                        {t('nav.signOut')}
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

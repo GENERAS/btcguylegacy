@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
+import { useTheme } from '../../context/ThemeContext';
 import {
   CheckCircle, XCircle, Star, Play, Pause, ExternalLink,
   Image, Mic, TrendingUp, Users, Building, Briefcase,
@@ -7,6 +8,7 @@ import {
 } from 'lucide-react';
 
 export default function TestimonialsManager() {
+  const { isDark } = useTheme();
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('pending');
@@ -128,9 +130,15 @@ export default function TestimonialsManager() {
 
   const getStatusBadge = (status) => {
     const styles = {
-      pending: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
-      approved: 'bg-green-500/20 text-green-400 border-green-500/30',
-      rejected: 'bg-red-500/20 text-red-400 border-red-500/30'
+      pending: isDark
+        ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
+        : 'bg-yellow-100 text-yellow-700 border-yellow-300',
+      approved: isDark
+        ? 'bg-green-500/20 text-green-400 border-green-500/30'
+        : 'bg-green-100 text-green-700 border-green-300',
+      rejected: isDark
+        ? 'bg-red-500/20 text-red-400 border-red-500/30'
+        : 'bg-red-100 text-red-700 border-red-300'
     };
     return (
       <span className={`px-3 py-1 rounded-full text-sm font-medium border ${styles[status] || styles.pending}`}>
@@ -139,10 +147,17 @@ export default function TestimonialsManager() {
     );
   };
 
+  const bg = isDark ? 'bg-gray-800' : 'bg-white';
+  const bgSub = isDark ? 'bg-gray-700/50' : 'bg-gray-50';
+  const border = isDark ? 'border-gray-700' : 'border-gray-200';
+  const text = isDark ? 'text-white' : 'text-gray-900';
+  const textSub = isDark ? 'text-gray-300' : 'text-gray-600';
+  const textMuted = isDark ? 'text-gray-400' : 'text-gray-500';
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-yellow-500" />
       </div>
     );
   }
@@ -151,29 +166,29 @@ export default function TestimonialsManager() {
     <div className="space-y-6">
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="bg-slate-800 rounded-lg p-4 text-center">
-          <div className="text-2xl font-bold text-yellow-400">
+        <div className={`${bg} border ${border} rounded-lg p-4 text-center`}>
+          <div className={`text-2xl font-bold ${isDark ? 'text-yellow-400' : 'text-yellow-600'}`}>
             {testimonials.filter(t => t.status === 'pending').length}
           </div>
-          <div className="text-sm text-gray-400">Pending</div>
+          <div className={`text-sm ${textMuted}`}>Pending</div>
         </div>
-        <div className="bg-slate-800 rounded-lg p-4 text-center">
-          <div className="text-2xl font-bold text-green-400">
+        <div className={`${bg} border ${border} rounded-lg p-4 text-center`}>
+          <div className={`text-2xl font-bold ${isDark ? 'text-green-400' : 'text-green-600'}`}>
             {testimonials.filter(t => t.status === 'approved').length}
           </div>
-          <div className="text-sm text-gray-400">Approved</div>
+          <div className={`text-sm ${textMuted}`}>Approved</div>
         </div>
-        <div className="bg-slate-800 rounded-lg p-4 text-center">
-          <div className="text-2xl font-bold text-purple-400">
+        <div className={`${bg} border ${border} rounded-lg p-4 text-center`}>
+          <div className={`text-2xl font-bold ${isDark ? 'text-purple-400' : 'text-purple-600'}`}>
             {testimonials.filter(t => t.is_featured).length}
           </div>
-          <div className="text-sm text-gray-400">Featured</div>
+          <div className={`text-sm ${textMuted}`}>Featured</div>
         </div>
-        <div className="bg-slate-800 rounded-lg p-4 text-center">
-          <div className="text-2xl font-bold text-blue-400">
+        <div className={`${bg} border ${border} rounded-lg p-4 text-center`}>
+          <div className={`text-2xl font-bold ${isDark ? 'text-blue-400' : 'text-yellow-600'}`}>
             {testimonials.reduce((acc, t) => acc + (t.rating || 5), 0) / (testimonials.length || 1).toFixed(1)}
           </div>
-          <div className="text-sm text-gray-400">Avg Rating</div>
+          <div className={`text-sm ${textMuted}`}>Avg Rating</div>
         </div>
       </div>
 
@@ -185,8 +200,8 @@ export default function TestimonialsManager() {
             onClick={() => setFilter(status)}
             className={`px-4 py-2 rounded-lg capitalize transition ${
               filter === status
-                ? 'bg-blue-600 text-white'
-                : 'bg-slate-800 text-gray-400 hover:bg-slate-700'
+                ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
+                : `${bgSub} ${textMuted} ${isDark ? 'hover:bg-gray-700' : 'hover:bg-gray-200'}`
             }`}
           >
             {status}
@@ -199,20 +214,20 @@ export default function TestimonialsManager() {
         {testimonials.map((testimonial) => (
           <div
             key={testimonial.id}
-            className={`bg-slate-800/50 rounded-xl border ${
-              testimonial.is_featured ? 'border-amber-500/50' : 'border-slate-700'
+            className={`${bg} rounded-xl border ${
+              testimonial.is_featured ? 'border-amber-500/50' : border
             } overflow-hidden`}
           >
             <div className="p-6 space-y-4">
               {/* Header */}
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-lg font-bold">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-lg font-bold text-white">
                     {testimonial.client_name.charAt(0).toUpperCase()}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg">{testimonial.client_name}</h3>
-                    <div className="flex items-center gap-2 text-sm text-gray-400">
+                    <h3 className={`font-semibold text-lg ${text}`}>{testimonial.client_name}</h3>
+                    <div className={`flex items-center gap-2 text-sm ${textMuted}`}>
                       <Building className="w-4 h-4" />
                       {testimonial.client_company || 'No company'}
                       {testimonial.client_position && ` - ${testimonial.client_position}`}
@@ -222,7 +237,11 @@ export default function TestimonialsManager() {
                 <div className="flex items-center gap-2">
                   {getStatusBadge(testimonial.status)}
                   {testimonial.is_featured && (
-                    <span className="px-3 py-1 bg-amber-500/20 text-amber-400 rounded-full text-sm border border-amber-500/30">
+                    <span className={`px-3 py-1 rounded-full text-sm border ${
+                      isDark
+                        ? 'bg-amber-500/20 text-amber-400 border-amber-500/30'
+                        : 'bg-amber-100 text-amber-700 border-amber-300'
+                    }`}>
                       Featured
                     </span>
                   )}
@@ -230,19 +249,19 @@ export default function TestimonialsManager() {
               </div>
 
               {/* Project Info */}
-              <div className="bg-slate-900/50 rounded-lg p-4">
-                <div className="flex items-center gap-2 text-blue-400 font-medium mb-2">
+              <div className={`${bgSub} rounded-lg p-4`}>
+                <div className={`flex items-center gap-2 font-medium mb-2 ${isDark ? 'text-blue-400' : 'text-yellow-600'}`}>
                   <Briefcase className="w-4 h-4" />
                   {testimonial.project_title}
                 </div>
-                <p className="text-sm text-gray-400">{testimonial.project_description}</p>
+                <p className={`text-sm ${textSub}`}>{testimonial.project_description}</p>
                 <div className="flex gap-4 mt-3 text-sm">
                   {testimonial.project_link && (
                     <a
                       href={testimonial.project_link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1 text-blue-400 hover:text-blue-300"
+                      className={`flex items-center gap-1 ${isDark ? 'text-yellow-600 hover:text-yellow-500 dark:text-yellow-400 dark:hover:text-yellow-300' : 'text-yellow-600 hover:text-blue-700'}`}
                     >
                       <ExternalLink className="w-4 h-4" />
                       Live Site
@@ -253,7 +272,7 @@ export default function TestimonialsManager() {
                       href={testimonial.demo_link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1 text-purple-400 hover:text-purple-300"
+                      className={`flex items-center gap-1 ${isDark ? 'text-purple-400 hover:text-purple-300' : 'text-purple-600 hover:text-purple-700'}`}
                     >
                       <ExternalLink className="w-4 h-4" />
                       Demo
@@ -264,8 +283,8 @@ export default function TestimonialsManager() {
 
               {/* Testimonial Content */}
               <div className="flex items-start gap-2">
-                <MessageSquare className="w-5 h-5 text-gray-500 mt-1" />
-                <p className="text-gray-300 flex-1">{testimonial.testimonial_text}</p>
+                <MessageSquare className={`w-5 h-5 mt-1 ${textMuted}`} />
+                <p className={`${textSub} flex-1`}>{testimonial.testimonial_text}</p>
               </div>
 
               {/* Rating */}
@@ -276,7 +295,7 @@ export default function TestimonialsManager() {
                     className={`w-5 h-5 ${
                       i < (testimonial.rating || 5)
                         ? 'text-amber-400 fill-amber-400'
-                        : 'text-gray-600'
+                        : isDark ? 'text-gray-600' : 'text-gray-300'
                     }`}
                   />
                 ))}
@@ -308,8 +327,8 @@ export default function TestimonialsManager() {
                     onClick={() => toggleAudio(testimonial.voice_message_en)}
                     className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm ${
                       playingAudio?.url === testimonial.voice_message_en
-                        ? 'bg-red-500/20 text-red-400'
-                        : 'bg-blue-500/20 text-blue-400'
+                        ? isDark ? 'bg-red-500/20 text-red-400' : 'bg-red-100 text-red-700'
+                        : isDark ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-100 text-blue-700'
                     }`}
                   >
                     {playingAudio?.url === testimonial.voice_message_en ? (
@@ -324,8 +343,8 @@ export default function TestimonialsManager() {
                     onClick={() => toggleAudio(testimonial.voice_message_rw)}
                     className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm ${
                       playingAudio?.url === testimonial.voice_message_rw
-                        ? 'bg-red-500/20 text-red-400'
-                        : 'bg-green-500/20 text-green-400'
+                        ? isDark ? 'bg-red-500/20 text-red-400' : 'bg-red-100 text-red-700'
+                        : isDark ? 'bg-green-500/20 text-green-400' : 'bg-green-100 text-green-700'
                     }`}
                   >
                     {playingAudio?.url === testimonial.voice_message_rw ? (
@@ -339,21 +358,21 @@ export default function TestimonialsManager() {
 
               {/* Business Impact */}
               {(testimonial.clients_before || testimonial.revenue_before) && (
-                <div className="grid grid-cols-2 gap-4 bg-slate-900/30 rounded-lg p-4">
+                <div className={`grid grid-cols-2 gap-4 ${bgSub} rounded-lg p-4`}>
                   {testimonial.clients_before && (
                     <div className="flex items-center gap-2">
-                      <Users className="w-4 h-4 text-green-400" />
-                      <span className="text-sm text-gray-400">Clients:</span>
-                      <span className="text-green-400 font-medium">
+                      <Users className={`w-4 h-4 ${isDark ? 'text-green-400' : 'text-green-600'}`} />
+                      <span className={`text-sm ${textSub}`}>Clients:</span>
+                      <span className={`font-medium ${isDark ? 'text-green-400' : 'text-green-600'}`}>
                         +{calculateGrowth(testimonial.clients_before, testimonial.clients_after)}%
                       </span>
                     </div>
                   )}
                   {testimonial.revenue_before && (
                     <div className="flex items-center gap-2">
-                      <TrendingUp className="w-4 h-4 text-green-400" />
-                      <span className="text-sm text-gray-400">Revenue:</span>
-                      <span className="text-green-400 font-medium">
+                      <TrendingUp className={`w-4 h-4 ${isDark ? 'text-green-400' : 'text-green-600'}`} />
+                      <span className={`text-sm ${textSub}`}>Revenue:</span>
+                      <span className={`font-medium ${isDark ? 'text-green-400' : 'text-green-600'}`}>
                         +{calculateGrowth(testimonial.revenue_before, testimonial.revenue_after)}%
                       </span>
                     </div>
@@ -362,13 +381,15 @@ export default function TestimonialsManager() {
               )}
 
               {/* Actions */}
-              <div className="flex items-center gap-2 pt-4 border-t border-slate-700">
+              <div className={`flex items-center gap-2 pt-4 border-t ${border}`}>
                 {testimonial.status === 'pending' && (
                   <>
                     <button
                       onClick={() => handleApprove(testimonial.id)}
                       disabled={actionLoading === testimonial.id}
-                      className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-slate-700 rounded-lg transition"
+                      className={`flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition ${
+                        isDark ? 'disabled:bg-gray-700' : 'disabled:bg-gray-300'
+                      } disabled:cursor-not-allowed`}
                     >
                       {actionLoading === testimonial.id ? (
                         <Loader2 className="w-4 h-4 animate-spin" />
@@ -380,7 +401,9 @@ export default function TestimonialsManager() {
                     <button
                       onClick={() => handleReject(testimonial.id)}
                       disabled={actionLoading === testimonial.id}
-                      className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 disabled:bg-slate-700 rounded-lg transition"
+                      className={`flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition ${
+                        isDark ? 'disabled:bg-gray-700' : 'disabled:bg-gray-300'
+                      } disabled:cursor-not-allowed`}
                     >
                       <XCircle className="w-4 h-4" />
                       Reject
@@ -394,8 +417,10 @@ export default function TestimonialsManager() {
                     disabled={actionLoading === testimonial.id}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg transition ${
                       testimonial.is_featured
-                        ? 'bg-amber-600 hover:bg-amber-700'
-                        : 'bg-slate-700 hover:bg-slate-600'
+                        ? 'bg-amber-600 hover:bg-amber-700 text-white'
+                        : isDark
+                          ? 'bg-gray-700 hover:bg-gray-600 text-gray-200'
+                          : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
                     }`}
                   >
                     <Flag className="w-4 h-4" />
@@ -406,7 +431,11 @@ export default function TestimonialsManager() {
                 <button
                   onClick={() => handleDelete(testimonial.id)}
                   disabled={actionLoading === testimonial.id}
-                  className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-red-900/50 text-red-400 rounded-lg transition ml-auto"
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition ml-auto ${
+                    isDark
+                      ? 'bg-gray-900/50 hover:bg-red-900/50 text-red-400'
+                      : 'bg-gray-100 hover:bg-red-100 text-red-600'
+                  }`}
                 >
                   Delete
                 </button>
@@ -417,8 +446,8 @@ export default function TestimonialsManager() {
       </div>
 
       {testimonials.length === 0 && (
-        <div className="text-center py-12 text-gray-400">
-          <CheckSquare className="w-16 h-16 mx-auto mb-4 text-gray-600" />
+        <div className={`text-center py-12 ${textMuted}`}>
+          <CheckSquare className={`w-16 h-16 mx-auto mb-4 ${isDark ? 'text-gray-600' : 'text-gray-400'}`} />
           <p>No {filter} testimonials found.</p>
         </div>
       )}
@@ -435,7 +464,7 @@ export default function TestimonialsManager() {
               alt={selectedTestimonial.project_title}
               loading="lazy" className="max-w-full max-h-[85vh] rounded-lg"
             />
-            <p className="text-center mt-4 text-gray-300">
+            <p className="text-center mt-4 text-gray-200">
               {selectedTestimonial.project_title} - {selectedTestimonial.client_name}
             </p>
           </div>

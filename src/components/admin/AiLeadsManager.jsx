@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
+import { useTheme } from '../../context/ThemeContext';
 import { 
   MessageSquare, Mail, Phone, MapPin, Building, 
   Search, Filter, RefreshCw, ExternalLink, Tag,
@@ -7,11 +8,29 @@ import {
 } from 'lucide-react';
 
 const AiLeadsManager = () => {
+  const { isDark } = useTheme();
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedLead, setSelectedLead] = useState(null);
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+
+  const bg = isDark ? 'bg-gray-800' : 'bg-white'
+  const bgSub = isDark ? 'bg-gray-700/50' : 'bg-gray-50'
+  const border = isDark ? 'border-gray-700' : 'border-gray-200'
+  const text = isDark ? 'text-white' : 'text-gray-900'
+  const textSub = isDark ? 'text-gray-300' : 'text-gray-600'
+  const textMuted = isDark ? 'text-gray-400' : 'text-gray-500'
+  const inputBg = isDark ? 'bg-gray-900/50 border-gray-600 text-white placeholder-gray-500' : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
+  const focusRing = 'focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-500'
+  const pageBg = isDark ? 'bg-gray-900' : 'bg-gray-50'
+  const pillInactive = isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+  const btnGhost = isDark ? 'bg-gray-700 text-gray-200 hover:bg-gray-600' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+  const btnOutline = isDark ? 'border-gray-600 text-gray-200 hover:bg-gray-700' : 'border-gray-300 text-gray-800 hover:bg-gray-50'
+  const linkAccent = isDark ? 'text-yellow-400 hover:text-yellow-300' : 'text-yellow-600 hover:text-yellow-700'
+  const dangerLink = isDark ? 'text-red-400 hover:text-red-300' : 'text-red-600 hover:text-red-700'
+  const successLink = isDark ? 'text-green-400 hover:text-green-300' : 'text-green-600 hover:text-green-700'
+  const optCls = isDark ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'
 
   useEffect(() => {
     fetchLeads();
@@ -65,11 +84,11 @@ const AiLeadsManager = () => {
 
   const getLabelColor = (label) => {
     switch (label) {
-      case 'hot': return 'bg-red-100 text-red-800';
-      case 'warm': return 'bg-yellow-100 text-yellow-800';
-      case 'cold': return 'bg-blue-100 text-blue-800';
-      case 'new': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'hot': return isDark ? 'bg-red-500/20 text-red-300' : 'bg-red-100 text-red-800';
+      case 'warm': return isDark ? 'bg-yellow-500/20 text-yellow-300' : 'bg-yellow-100 text-yellow-800';
+      case 'cold': return isDark ? 'bg-blue-500/20 text-blue-300' : 'bg-blue-100 text-blue-800';
+      case 'new': return isDark ? 'bg-gray-500/30 text-gray-300' : 'bg-gray-100 text-gray-800';
+      default: return isDark ? 'bg-gray-500/30 text-gray-300' : 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -97,46 +116,46 @@ const AiLeadsManager = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
+    <div className={`p-6 min-h-screen ${pageBg}`}>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">AI Assistant Leads</h1>
-        <p className="text-gray-600 mt-1">Leads captured by the AI chatbot and website audit form</p>
+        <h1 className={`text-3xl font-bold ${text}`}>AI Assistant Leads</h1>
+        <p className={`${textSub} mt-1`}>Leads captured by the AI chatbot and website audit form</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
-        <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-gray-500">
-          <p className="text-gray-500 text-sm">Total Leads</p>
-          <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+        <div className={`${bg} rounded-xl shadow-sm p-4 border ${border} border-l-4 border-l-gray-500`}>
+          <p className={`${textMuted} text-sm`}>Total Leads</p>
+          <p className={`text-2xl font-bold ${text}`}>{stats.total}</p>
         </div>
-        <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-gray-400">
-          <p className="text-gray-500 text-sm">New</p>
-          <p className="text-2xl font-bold text-gray-900">{stats.new}</p>
+        <div className={`${bg} rounded-xl shadow-sm p-4 border ${border} border-l-4 border-l-gray-400`}>
+          <p className={`${textMuted} text-sm`}>New</p>
+          <p className={`text-2xl font-bold ${text}`}>{stats.new}</p>
         </div>
-        <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-red-500">
-          <p className="text-gray-500 text-sm">Hot</p>
-          <p className="text-2xl font-bold text-gray-900">{stats.hot}</p>
+        <div className={`${bg} rounded-xl shadow-sm p-4 border ${border} border-l-4 border-l-red-500`}>
+          <p className={`${textMuted} text-sm`}>Hot</p>
+          <p className={`text-2xl font-bold ${text}`}>{stats.hot}</p>
         </div>
-        <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-yellow-500">
-          <p className="text-gray-500 text-sm">Warm</p>
-          <p className="text-2xl font-bold text-gray-900">{stats.warm}</p>
+        <div className={`${bg} rounded-xl shadow-sm p-4 border ${border} border-l-4 border-l-yellow-500`}>
+          <p className={`${textMuted} text-sm`}>Warm</p>
+          <p className={`text-2xl font-bold ${text}`}>{stats.warm}</p>
         </div>
-        <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-blue-500">
-          <p className="text-gray-500 text-sm">Cold</p>
-          <p className="text-2xl font-bold text-gray-900">{stats.cold}</p>
+        <div className={`${bg} rounded-xl shadow-sm p-4 border ${border} border-l-4 border-l-blue-500`}>
+          <p className={`${textMuted} text-sm`}>Cold</p>
+          <p className={`text-2xl font-bold ${text}`}>{stats.cold}</p>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm p-4 mb-6">
+      <div className={`${bg} rounded-xl shadow-sm p-4 mb-6 border ${border}`}>
         <div className="flex flex-wrap gap-4">
           <div className="flex-1">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
               <input
                 type="text"
                 placeholder="Search by name, email, phone, company..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg"
+                className={`w-full pl-9 pr-4 py-2 border rounded-lg outline-none transition-colors ${inputBg} ${focusRing}`}
               />
             </div>
           </div>
@@ -146,7 +165,7 @@ const AiLeadsManager = () => {
                 key={f}
                 onClick={() => setFilter(f)}
                 className={`px-4 py-2 rounded-lg capitalize transition-all ${
-                  filter === f ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'
+                  filter === f ? 'bg-yellow-600 text-white hover:bg-yellow-700' : pillInactive
                 }`}
               >
                 {f}
@@ -155,7 +174,7 @@ const AiLeadsManager = () => {
           </div>
           <button
             onClick={fetchLeads}
-            className="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 flex items-center gap-2"
+            className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-colors ${btnGhost}`}
           >
             <RefreshCw className="w-4 h-4" />
             Refresh
@@ -165,32 +184,32 @@ const AiLeadsManager = () => {
 
       {loading ? (
         <div className="flex justify-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-600"></div>
         </div>
       ) : filteredLeads.length === 0 ? (
-        <div className="bg-white rounded-xl shadow-sm p-12 text-center">
-          <MessageSquare className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <p className="text-gray-500">No leads found</p>
+        <div className={`${bg} rounded-xl shadow-sm p-12 text-center border ${border}`}>
+          <MessageSquare className={`w-16 h-16 mx-auto mb-4 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
+          <p className={textMuted}>No leads found</p>
         </div>
       ) : (
         <div className="space-y-4">
           {filteredLeads.map((lead) => (
-            <div key={lead.id} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
+            <div key={lead.id} className={`${bg} rounded-xl shadow-sm hover:shadow-md transition-shadow border ${border}`}>
               <div className="p-5">
                 <div className="flex flex-wrap justify-between items-start gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2 flex-wrap">
-                      <h3 className="font-semibold text-lg text-gray-900">{lead.name || 'Anonymous'}</h3>
+                      <h3 className={`font-semibold text-lg ${text}`}>{lead.name || 'Anonymous'}</h3>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${getLabelColor(lead.lead_label)}`}>
                         {lead.lead_label || 'new'}
                       </span>
                       {lead.source && (
-                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${isDark ? 'bg-purple-500/20 text-purple-300' : 'bg-purple-100 text-purple-800'}`}>
                           {lead.source}
                         </span>
                       )}
                     </div>
-                    <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+                    <div className={`flex flex-wrap gap-4 text-sm ${textSub}`}>
                       {lead.email && (
                         <div className="flex items-center gap-1">
                           <Mail className="w-4 h-4" />
@@ -224,7 +243,7 @@ const AiLeadsManager = () => {
                       {lead.website_url && (
                         <div className="flex items-center gap-1">
                           <Globe className="w-4 h-4" />
-                          <a href={lead.website_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                          <a href={lead.website_url} target="_blank" rel="noopener noreferrer" className={linkAccent}>
                             {lead.website_url.replace(/^https?:\/\//, '').substring(0, 30)}...
                           </a>
                         </div>
@@ -245,16 +264,16 @@ const AiLeadsManager = () => {
                     <select
                       value={lead.lead_label || 'new'}
                       onChange={(e) => updateLeadLabel(lead.id, e.target.value)}
-                      className="px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                      className={`px-3 py-2 border rounded-lg text-sm outline-none transition-colors cursor-pointer ${inputBg} ${focusRing}`}
                     >
-                      <option value="new">New</option>
-                      <option value="hot">Hot</option>
-                      <option value="warm">Warm</option>
-                      <option value="cold">Cold</option>
+                      <option value="new" className={optCls}>New</option>
+                      <option value="hot" className={optCls}>Hot</option>
+                      <option value="warm" className={optCls}>Warm</option>
+                      <option value="cold" className={optCls}>Cold</option>
                     </select>
                     <button
                       onClick={() => setSelectedLead(selectedLead?.id === lead.id ? null : lead)}
-                      className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                      className={`px-4 py-2 border rounded-lg transition-colors ${btnOutline}`}
                     >
                       {selectedLead?.id === lead.id ? 'Hide' : 'View'}
                     </button>
@@ -262,31 +281,31 @@ const AiLeadsManager = () => {
                 </div>
 
                 {selectedLead?.id === lead.id && (
-                  <div className="mt-4 pt-4 border-t">
+                  <div className={`mt-4 pt-4 border-t ${border}`}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <h4 className="font-semibold text-gray-800 mb-2">Lead Details</h4>
+                        <h4 className={`font-semibold mb-2 ${text}`}>Lead Details</h4>
                         <div className="space-y-2 text-sm">
-                          {lead.project_type && <p className="text-gray-900"><span className="text-gray-600 font-medium">Project Type:</span> {lead.project_type}</p>}
-                          {lead.user_type && <p className="text-gray-900"><span className="text-gray-600 font-medium">User Type:</span> {lead.user_type}</p>}
-                          {lead.location && <p className="text-gray-900"><span className="text-gray-600 font-medium">Location:</span> {lead.location}</p>}
-                          {lead.message && <p className="text-gray-900"><span className="text-gray-600 font-medium">Message:</span> {lead.message}</p>}
-                          {lead.project_brief && <p className="text-gray-900"><span className="text-gray-600 font-medium">Project Brief:</span> {lead.project_brief}</p>}
+                          {lead.project_type && <p className={text}><span className={`${textSub} font-medium`}>Project Type:</span> {lead.project_type}</p>}
+                          {lead.user_type && <p className={text}><span className={`${textSub} font-medium`}>User Type:</span> {lead.user_type}</p>}
+                          {lead.location && <p className={text}><span className={`${textSub} font-medium`}>Location:</span> {lead.location}</p>}
+                          {lead.message && <p className={text}><span className={`${textSub} font-medium`}>Message:</span> {lead.message}</p>}
+                          {lead.project_brief && <p className={text}><span className={`${textSub} font-medium`}>Project Brief:</span> {lead.project_brief}</p>}
                         </div>
                       </div>
                       <div>
                         {lead.chat_transcript && (
                           <div>
-                            <h4 className="font-semibold text-gray-800 mb-2">Chat Transcript</h4>
-                            <div className="bg-gray-50 rounded-lg p-3 text-sm max-h-48 overflow-y-auto text-gray-900">
+                            <h4 className={`font-semibold mb-2 ${text}`}>Chat Transcript</h4>
+                            <div className={`${bgSub} rounded-lg p-3 text-sm max-h-48 overflow-y-auto ${text}`}>
                               {lead.chat_transcript}
                             </div>
                           </div>
                         )}
                         {lead.discovery_answers && (
                           <div className="mt-4">
-                            <h4 className="font-semibold text-gray-800 mb-2">Discovery Answers</h4>
-                            <div className="bg-gray-50 rounded-lg p-3 text-sm text-gray-900">
+                            <h4 className={`font-semibold mb-2 ${text}`}>Discovery Answers</h4>
+                            <div className={`${bgSub} rounded-lg p-3 text-sm ${text}`}>
                               {typeof lead.discovery_answers === 'object'
                                 ? JSON.stringify(lead.discovery_answers, null, 2)
                                 : lead.discovery_answers}
@@ -297,14 +316,14 @@ const AiLeadsManager = () => {
                     </div>
                     <div className="flex gap-2 mt-4">
                       {lead.email && (
-                        <a href={`mailto:${lead.email}`} className="text-blue-600 hover:underline text-sm">Send Email</a>
+                        <a href={`mailto:${lead.email}`} className={`${linkAccent} text-sm`}>Send Email</a>
                       )}
                       {lead.whatsapp && (
-                        <a href={`https://wa.me/${lead.whatsapp}`} target="_blank" rel="noopener noreferrer" className="text-green-600 hover:underline text-sm flex items-center gap-1">
+                        <a href={`https://wa.me/${lead.whatsapp}`} target="_blank" rel="noopener noreferrer" className={`${successLink} text-sm flex items-center gap-1`}>
                           WhatsApp <ExternalLink className="w-3 h-3" />
                         </a>
                       )}
-                      <button onClick={() => deleteLead(lead.id)} className="text-red-600 hover:underline text-sm flex items-center gap-1 ml-auto">
+                      <button onClick={() => deleteLead(lead.id)} className={`${dangerLink} text-sm flex items-center gap-1 ml-auto`}>
                         <Trash2 className="w-3 h-3" /> Delete
                       </button>
                     </div>

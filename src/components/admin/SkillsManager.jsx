@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
 import { FaEdit, FaTrash, FaSave, FaPlus } from 'react-icons/fa'
 
@@ -151,7 +151,7 @@ export default function SkillsManager() {
           min="1"
         />
         
-        <button type="submit" className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded flex items-center gap-2">
+        <button type="submit" className="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded flex items-center gap-2">
           <FaSave /> {editing ? 'Update' : 'Add'}
         </button>
         
@@ -191,7 +191,7 @@ export default function SkillsManager() {
                 </div>
               </div>
               <div className="flex gap-2">
-                <button onClick={() => handleEdit(skill)} className="text-blue-400 hover:text-blue-300">
+                <button onClick={() => handleEdit(skill)} className="text-yellow-600 hover:text-yellow-500 dark:text-yellow-400 dark:hover:text-yellow-300">
                   <FaEdit />
                 </button>
                 <button onClick={() => handleDelete(skill.id)} className="text-red-400 hover:text-red-300">

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
 import { FaUsers, FaSearch, FaTrash, FaDownload } from 'react-icons/fa'
 
@@ -71,7 +71,7 @@ export default function FollowerManager() {
     <div>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold flex items-center gap-2">
-          <FaUsers className="text-blue-500" />
+          <FaUsers className="text-yellow-600 dark:text-yellow-400" />
           Followers ({followers.length})
         </h2>
         <button 
@@ -89,7 +89,7 @@ export default function FollowerManager() {
           placeholder="Search followers..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="w-full bg-slate-700 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 "
         />
       </div>
 

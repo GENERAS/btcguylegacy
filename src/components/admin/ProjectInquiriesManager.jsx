@@ -1,4 +1,4 @@
-// src/components/admin/ProjectInquiriesManager.jsx
+﻿// src/components/admin/ProjectInquiriesManager.jsx
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { 
@@ -98,7 +98,7 @@ const ProjectInquiriesManager = () => {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-blue-500">
+        <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-yellow-500">
           <p className="text-gray-500 text-sm">Total Inquiries</p>
           <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
         </div>
@@ -137,7 +137,7 @@ const ProjectInquiriesManager = () => {
                 key={f}
                 onClick={() => setFilter(f)}
                 className={`px-4 py-2 rounded-lg capitalize transition-all ${
-                  filter === f ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'
+                  filter === f ? 'bg-yellow-600 text-white' : 'bg-gray-100 text-gray-700'
                 }`}
               >
                 {f === 'in_progress' ? 'In Progress' : f}
@@ -157,7 +157,7 @@ const ProjectInquiriesManager = () => {
       {/* Inquiries List */}
       {loading ? (
         <div className="flex justify-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-600"></div>
         </div>
       ) : filteredInquiries.length === 0 ? (
         <div className="bg-white rounded-xl shadow-sm p-12 text-center">
@@ -256,11 +256,11 @@ const ProjectInquiriesManager = () => {
                         <div className="mt-4">
                           <h4 className="font-semibold text-gray-800 mb-2">Quick Actions</h4>
                           <div className="flex gap-2">
-                            <a href={`mailto:${inquiry.email}`} className="text-blue-600 hover:underline text-sm">
+                            <a href={`mailto:${inquiry.email}`} className="text-yellow-600 hover:underline text-sm">
                               Send Email
                             </a>
                             <span className="text-gray-300">|</span>
-                            <a href={`tel:${inquiry.phone}`} className="text-blue-600 hover:underline text-sm">
+                            <a href={`tel:${inquiry.phone}`} className="text-yellow-600 hover:underline text-sm">
                               Call Client
                             </a>
                           </div>
